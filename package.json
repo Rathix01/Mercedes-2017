@@ -1,0 +1,26 @@
+{
+  "name": "my-app",
+  "version": "0.0.1",
+  "homepage": ".",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "0.2.0"
+  },
+  "dependencies": {
+    "aphrodite": "^0.5.0",
+    "baconjs": "^0.7.84",
+    "deep-diff": "^0.3.4",
+    "gsap": "^1.16.1",
+    "moment": "^2.10.2",
+    "q": "^1.4.1",
+    "ramda": "^0.21.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-html-parser": "^1.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  }
+}

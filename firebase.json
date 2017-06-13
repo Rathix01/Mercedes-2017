@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "build",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers" : [{
+        "key" : "Access-Control-Allow-Origin",
+        "value" : "*",
+        "source": "http://rpg.insertcoin.co.nz"
+    }]
+  }
+}
