@@ -1,7 +1,5 @@
 import React from 'react';
-import R from 'ramda';
 import { currentState } from '../stores/state-store';
-import actions from '../../actions/actions';
 
 const StateProvider = ( InnerComponent ) => class extends React.Component {
 	constructor(props) {

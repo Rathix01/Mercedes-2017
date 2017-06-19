@@ -11,9 +11,11 @@ const renderChild = R.curry((state, child) => {
 
 const InputField = (state) => {
 	return (<div className={ `${ Styles.container } input-field` }>
-		<Text id={ state.id + "Label" } />
-		{R.head(React.Children.map(state.children, renderChild(state)))}
-		<ValidationMessage id={ state.id + "InputValidation" } />
+		<div className={ Styles.label }><Text id={ state.id + "Label" } value={ state.label } /></div>
+		<div className={ Styles.inputAndValidation }>
+			<div className={ Styles.input }>{R.head(React.Children.map(state.children, renderChild(state)))}</div>
+			<ValidationMessage id={ state.id + "InputValidation" } />
+		</div>
 	</div>);
 }
 

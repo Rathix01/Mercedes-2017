@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import GmMain from '../system/modules/warhammer-gm-main';
+import DynamicForm from '../system/modules/dynamic-form';
 
 class App extends Component {
   render() {
     return (
-        <div className="app-container"> 
-        	<GmMain id="GmMain" /> 
+        <div className="app-container">
+        	<DynamicForm id="Main" />
         </div>
     );
   }

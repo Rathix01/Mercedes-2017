@@ -1,4 +1,3 @@
-import Bacon from 'baconjs';
 import R from 'ramda';
 import publish from '../../../stores/state-store';
 import ListItemStore from './list-item-store';
