@@ -31,7 +31,7 @@ const pageUpdate = isNext.toEventStream().merge(isBack.toEventStream())
 						 .scan(1, toNextPage)
 						 .map(toValue)
 
-const formData = formOptionUpdate.map(toFormData).toProperty(form1);
+const formData = formOptionUpdate.map(toFormData)//.toProperty(form1);
 
 const initData = new Bacon.Bus();
 const updateData = Bacon.when([ formData, isLoad.toEventStream() ], (data, load) => data);
@@ -46,7 +46,8 @@ isClose.delay(100).onValue(() => closePanel.push(""));
 setTimeout(() => {
 
 	// kick off demo
-	initData.push(form1);
+	//initData.push(form1);
+	initData.push({ items: [] });
 	pageBus.push({ value: 1 });
 
 }, 600);

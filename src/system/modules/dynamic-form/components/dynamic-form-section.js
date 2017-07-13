@@ -4,7 +4,6 @@ import AnimationContainer from '../../animation-container'
 import VisibilityContainer from '../../visibility-container'
 
 const renderChild = (state, c) => {
-
 	const Component = c;
   	const component = Component ? <Component /> : null;
 

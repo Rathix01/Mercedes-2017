@@ -5,8 +5,9 @@ import Section from './dynamic-form-section';
 import { formSection, form } from '../styles';
 
 const dynamicFormSectionList = (state) => {
-	return (<List id={ state.id + 'Sections' } className={form} rootId={state.rootId} itemClass={ formSection }>
-			<Section />
+	return (
+		<List id={ state.id + 'Sections' } className={form} rootId={state.rootId} itemClass={ formSection }>
+			{ state.section ? state.section : <Section /> }
 		</List>
 	);
 };

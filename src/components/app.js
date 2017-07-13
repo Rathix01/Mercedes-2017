@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import DynamicForm from '../system/modules/dynamic-form';
+import DynamicFormAdmin from '../system/modules/dynamic-form-admin';
 
 class App extends Component {
   render() {
-    return (
-        <div className="app-container">
-        	<DynamicForm id="Main" />
-        </div>
-    );
+    return <DynamicFormAdmin id="Main" />;
   }
 };
 
 export default App;
-
-

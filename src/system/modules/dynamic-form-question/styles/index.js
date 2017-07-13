@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     maxWidth: 1200,
-    margin: "20px auto",
+    margin: "10px auto",
     padding: "20px 20xp 0px 20px",
     boxSizing: "border-box",
     fontFamily: "Raleway",
