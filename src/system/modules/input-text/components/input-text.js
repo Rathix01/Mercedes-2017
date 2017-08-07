@@ -8,7 +8,7 @@ const InputText = (state) => {
 									className={ `${ getClassName(state) } ${ textInput }` } 
 									placeholder={ state.placeholder }
 									onChange={state.handleEvent} 
-									value={ state.value || "" }
+									value={ state.value }
 								/>
 }
 

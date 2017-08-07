@@ -9,6 +9,7 @@ const dynamicFormAdminTools = (state) => {
 	return (
 		<div className={ toolsContainer }>
 			<h1 className={header}>Tools</h1>
+			<DynamicFormAdminFormUpdateListener id="ActiveFormListener" />
 			<DynamicFormAdminFormUpdateListener id="AdminSections" />
 			<DynamicFormAdminToolsGeneric id="DynamicFormAdminToolsGeneric" />
 		</div>

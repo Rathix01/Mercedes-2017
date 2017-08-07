@@ -1,14 +1,8 @@
-import Bacon from 'baconjs';
 import R from 'ramda';
-import publish from '../../../stores/state-store';
-import Actions from '../../../../actions/actions';
-import { colors } from '../../../styles/variables.style.js';
-import DynamicFormAdminNewForm from '../../dynamic-form-admin-new-form';
+import Firebase from '../../firebase';
 
-// const toFormAdminActions = (state) => state.component === "DynamicFormAdmin" && state.componentEvent === "component-update";
-// const toActionById = R.curry((actionId, state) => state.event.target.id === actionId);
+const formData = Firebase.data.map(R.prop("FormDefinitions"))
 
-// const formAdminActions = Actions.filter(toFormAdminActions);
-// const newFormAction = formAdminActions.filter(toActionById("NewForm"));
-
-// module.exports = { newFormAction }
+module.exports = {
+	formData
+}

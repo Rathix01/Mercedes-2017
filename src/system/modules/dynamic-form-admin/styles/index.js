@@ -15,10 +15,15 @@ const styles = StyleSheet.create({
       display: "flex",
       flexDirection: "row",
       width: "100%",
+      position:"absolute",
+      height: "100%",
+      marginBottom: 60,
   },
   formColumn: {
       flexGrow: 3,
       marginLeft: 40,
+      position:"relative",
+      height: "100%",
   },
   toolsColumn: {
       flexGrow: 1,
@@ -56,6 +61,32 @@ const styles = StyleSheet.create({
   },
   saveFormBody: {
     marginTop: 20,
+  },
+    nextPrevBtns: {
+    position: "fixed",
+    bottom: -1,
+    left: 0,
+    width: '100%',
+  },
+  center:{
+    width: "100%",
+    maxWidth: 1200,
+    margin: "0px auto",
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: 'rgba(200,200,200, 0.6)',
+    border: `solid 1px ${ Variables.colors.gray }`,
+  },
+  btn: {
+    fontSize: 20,
+    fontFamily: 'Raleway',
+    padding: "5px 40px",
+  },
+  nextBtn:{
+    margin:"10px 5px",
+  },
+  prevBtn: {
+    margin:"10px 5px",
   }
 });
 
@@ -68,4 +99,8 @@ module.exports = {
   saveForm: css(styles.saveForm),
   saveFormHeader: css(styles.saveFormHeader),
   saveFormBody: css(styles.saveFormBody),
+  nextPrevBtns: css(styles.nextPrevBtns),
+  center: css(styles.center),
+  nextBtn: css(styles.nextBtn, styles.btn),
+  prevBtn: css(styles.prevBtn, styles.btn),
 }

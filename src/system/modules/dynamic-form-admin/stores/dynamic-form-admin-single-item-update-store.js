@@ -3,10 +3,12 @@ import R from 'ramda';
 import Actions from '../../../../actions/actions';
 
 const toUpdateListenerActions = (state) => state.component === "DynamicFormAdminSingleItemUpdateListener" && state.componentEvent === "component-update";
-const singleItemUpdate = Actions.filter(toUpdateListenerActions).map(R.prop("nextUpdate"));
+const isDelete = R.curry((shouldBe, state) => (state.delete === true) === shouldBe); 
+const hasUpdate = (state) => state.nextUpdate !== undefined;
 
-//singleItemUpdate.log('wingl')
+const singleItemUpdate = Actions.filter(toUpdateListenerActions).filter(isDelete(false)).filter(hasUpdate).map(R.prop("nextUpdate"))
+const singleItemDelete = Actions.filter(toUpdateListenerActions).filter(isDelete(true));
 
 module.exports = {
-	singleItemUpdate
+	singleItemUpdate, singleItemDelete
 };

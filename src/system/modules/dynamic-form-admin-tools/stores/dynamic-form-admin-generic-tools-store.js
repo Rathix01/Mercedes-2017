@@ -7,32 +7,35 @@ import publish from '../../../stores/state-store';
 import DynamicFormQuestion from '../../dynamic-form-question';
 import InputText from '../../input-text';
 
-const toGenericToolsAction = (state) => state.component === "DynamicFormAdminGenericTools";
-const toNewQuestionAction = (state) => state.event.target.id === "new-form";
-const toSaveFormAction = (state) => state.event.target.id === "save-form";
-const toLightboxClose = (state) => state.id === "SaveFormLightbox";
+const toGenericToolsAction = (state) => state.component === "DynamicFormAdminOrgAndFormTools" || state.component === "DynamicFormAdminGenericTools";
+const toNewQuestionAction = (state) => state.event.target.id === "new-question";
+const toNewFormAction = (state) => state.event.target.id === "new-form";
+const toggleDisplay = (prev, next) => ({ displayNewForm: !prev.displayNewForm });
+const toDisplayIf = R.curry(( display, state ) => ({ display: state.displayNewForm === display }));
 
 const toNewQuestion	= (state) => ({
-		uniqueID: new Date().getTime(),
+		uniqueId: new Date().getTime(),
 		sectionId: "Test" + new Date().getTime(), 
 	  	dataComponent: DynamicFormQuestion,
 	  	itemInput: InputText,
-	  	itemState: { value: "example" },
 	  	title: "New Question",
 	  	page: 1,
 	  	componentType: "question",
+	  	inputType: "text",
 	  	type: "question",
 	  	inputType: "text",
+	  	itemState: { items: [ { label: 'Yes' }, { label: 'No' } ] },
 	});
 
 const genericToolsAction = Actions.filter(toGenericToolsAction);
 const newQuestionAction = genericToolsAction.filter(toNewQuestionAction);
-const saveFormAction = genericToolsAction.filter(toSaveFormAction);
+const newQuestion = newQuestionAction.map(toNewQuestion);
 
-const newQuestion = newQuestionAction.map(toNewQuestion)//.log('eh?');
-const saveForm = saveFormAction.map({ display: true }).onValue(publish("SaveForm"))
+const newFormAction = genericToolsAction.filter(toNewFormAction);
+const displayNewForm = newFormAction.scan( { displayNewForm: false }, toggleDisplay);
 
-Actions.filter(toLightboxClose).map({ display: false }).log('this?').onValue(publish("SaveForm"))
+displayNewForm.map(toDisplayIf(true)).onValue(publish("NewFormVisibility"));
+displayNewForm.map(toDisplayIf(false)).onValue(publish("OrgAndFormVisibility"));
 
 module.exports = {
 	newQuestion

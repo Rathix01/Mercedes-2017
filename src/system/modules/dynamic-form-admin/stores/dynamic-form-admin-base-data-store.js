@@ -9,7 +9,7 @@ import InputSelectList from '../../input-select-list';
 
 const baseFormData = { items: [ 
 	{ 
-		uniqueID: 1,
+		uniqueId: 1,
 		sectionId: "Test1", 
 	  	dataComponent: DynamicFormHeader,
 	  	title: "St Trevor's Hospital",
@@ -18,7 +18,7 @@ const baseFormData = { items: [
 	  	componentType: "header",
 	},
 	{ 
-		uniqueID: 2,
+		uniqueId: 2,
 		sectionId: "Test1a", 
 	  	dataComponent: DynamicFormText,
 	  	title: "Personal Details",
@@ -28,7 +28,7 @@ const baseFormData = { items: [
 	  	componentType: "text",
 	},
 	{ 
-		uniqueID: 3,
+		uniqueId: 3,
 		sectionId: "Test2", 
 	  	dataComponent: DynamicFormText,
 	  	title: "Personal Details",
@@ -37,7 +37,7 @@ const baseFormData = { items: [
 	  	componentType: "text",
 	},
 	{ 
-		uniqueID: 4,
+		uniqueId: 4,
 		sectionId: "Test3", 
 	  	dataComponent: DynamicFormQuestion,
 	  	itemInput: InputText,
@@ -48,7 +48,7 @@ const baseFormData = { items: [
 	  	inputType: "text",
 	},
 	{ 
-		uniqueID: 5,
+		uniqueId: 5,
 		sectionId: "Test4", 
 	  	dataComponent: DynamicFormQuestion,
 	  	itemInput: InputSelectList,

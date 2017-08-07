@@ -7,12 +7,39 @@ const styles = StyleSheet.create({
   },
   btnRow: {
     display: 'flex',
-    justifyContent: "flex-end",
     marginTop: 20
-  }
+  },
+  createForm: {
+    background: Variables.colors.green,
+    color: Variables.colors.white,
+    padding: 10,
+    maxWidth: 265,
+    boxSizing: "border-box",
+    marginTop: 10,
+    cursor: "pointer",
+
+    ":hover": {
+      background: Variables.colors.darkGreen,
+    }
+  },
+  newForm: {
+    background: Variables.colors.blue,
+    color: Variables.colors.white,
+    padding: 10,
+    maxWidth: 265,
+    width: "100%",
+    boxSizing: "border-box",
+    marginTop: 10,
+    cursor: "pointer",
+
+    ":hover": {
+      background: Variables.colors.darkBlue,
+    }
+  },
 });
 
 module.exports = {
   row: css(styles.row),
   btnRow: css(styles.row, styles.btnRow),
+  newForm: css(styles.newForm),
 }

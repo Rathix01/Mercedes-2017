@@ -7,7 +7,6 @@ import PositionAwareListItem from './position-aware-list-item';
 import PositionAwareListUpdateListener from './position-aware-list-update-listener';
 
 const positionAwareList = (state) => {
-	//console.log('list?', state)
 	return ( <AnimationContainer id={ `${state.id}ListAnimation` }>
 	  	<List id={ `${state.id}PositionAware` } isRoot={true} rootId={ `${state.id}PositionAware` }>
 	  		<PositionAwareListItem component={state.children}></PositionAwareListItem>

@@ -5,8 +5,7 @@ import SectionList from './dynamic-form-section-list';
 import NavButtons from './dynamic-form-nav-buttons';
 import { mainFormContainer } from '../styles';
 
-const dynamicForm = (state) => {
-	console.log('form')
+const dynamicForm = (state) => {y
 	return (
 		<div className={ mainFormContainer }>
 			<SectionList id="DynamicForm" section={ state.children || null } />

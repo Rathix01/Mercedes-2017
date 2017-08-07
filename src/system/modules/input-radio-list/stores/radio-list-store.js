@@ -24,6 +24,8 @@ const radioLists = Actions.filter(toRadioLists);
 const allLists = radioLists.scan({}, toAllLists);
 const listAndEvent = Bacon.when([ allLists, radioItemEvents.toEventStream()], toListAndEvent)
 
+listAndEvent.log('allLists')
+
 radioLists.filter(toMountEvents).onValue(toInitItem)
 
 listAndEvent.flatMap(toUpdates).onValue(publishToList)

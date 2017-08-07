@@ -6,6 +6,7 @@ const dynamicFormAdminBasicControls = (state) => {
 	return (
 		<div className={ basicControls }>
 			<button onClick={ state.handleEvent } id='basic-edit'>Edit</button>
+			<button onClick={ state.handleEvent } id='basic-delete'>Delete</button>
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import readWrite from '../../../components/read-and-write-state';
 import DisplayField from '../../display-field';
 import InputSelectList from '../../input-select-list';
 import InputText from '../../input-text';
-import { row, btnRow } from '../styles';
+import { row, btnRow, newForm } from '../styles';
 
 const dynamicFormAdminEditForm = (state) => {
 	return (
@@ -11,40 +11,42 @@ const dynamicFormAdminEditForm = (state) => {
 			<br />
 			<div className={row}>
 				<label>ID</label>
-				<div> { `${state.sectionId || ""}-${ state.uniqueID || "" }` } </div>
+				<div> { `${ state.uniqueId || "" }` } </div>
 			</div>
 			<div className={row}>
 				<label>Component Type</label>
 				<div> 
-					<InputSelectList id="ComponentTypeSelect" items={ [ "header", "question", "text" ] } /> 
+					<InputSelectList id="ComponentTypeSelect" items={ [ "", "header", "question", "text" ] } /> 
+				</div>
+			</div>
+			<div className={row}>
+				<label>Input Type</label>
+				<div> 
+					<InputSelectList id="ComponentInputType" items={ [ "", "text", "select", "radio", "text area" ] } /> 
 				</div>
 			</div>
 			<div className={row}>
 				<label>Title</label>
 				<div> 
-					<InputText id="ComponentTitle" items={ [ "header", "question", "text" ] } /> 
+					<InputText id="ComponentTitle" /> 
 				</div>
 			</div>
 			<div className={row}>
 				<label>Text</label>
 				<div> 
-					<InputText id="ComponentText" items={ [ "header", "question", "text" ] } /> 
+					<InputText id="ComponentText" /> 
 				</div>
 			</div>
 			<div className={row}>
-				<label>Input</label>
+				<label>Page</label>
 				<div> 
-					<InputSelectList id="ComponentInputSelect" items={ [ "text", "select" ] } /> 
-				</div>
-			</div>
-			<div className={row}>
-				<label>Options</label>
-				<div> 
-					<InputSelectList id="ComponentInputOptions" items={ [ "a", "b", "c" ] } /> 
+					<InputText id="ComponentPage" />  
 				</div>
 			</div>
 			<div className={btnRow}>
-				<button onClick={ state.handleEvent } id="save-question">Save</button>
+				<div onClick={ state.handleEvent } id="save-question" className={newForm}>
+					<i className="fa fa-arrow-circle-left"></i> Apply
+				</div>
 			</div>
 		</div>
 	);

@@ -4,7 +4,7 @@ import { BackgroundColorsStyle, Variables } from '../../../styles/';
 const styles = StyleSheet.create({
   section: {
     maxWidth: "1200px",
-    margin: "0px auto 10px",
+    margin: "0px auto 0px",
     padding: '0px',
     position: "relative",
     overflow: "hidden",

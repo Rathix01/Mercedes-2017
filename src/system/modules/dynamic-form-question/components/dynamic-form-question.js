@@ -8,6 +8,7 @@ const renderChild = (state, c) => {
   	const component = Component ? <Component /> : null;
     return React.cloneElement(component, { id: `${state.id}Question${state.index}`, 
     									   key: `${state.id}Question${state.index}`,
+    									   uniqueId: state.uniqueId,
     									   ...state.itemState });
 }
 

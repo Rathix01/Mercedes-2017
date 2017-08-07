@@ -4,7 +4,8 @@ import PositionAwareList from '../../position-aware-list';
 import DynamicFormAdminTools from '../../dynamic-form-admin-tools';
 import DynamicFormAdminSection from './dynamic-form-admin-section';
 import DynamicFormAdminSingleItemUpdateListener from './dynamic-form-admin-single-item-update-listener';
-import DynamicFormTempSave from './dynamic-form-temp-save-lightbox'
+import DynamicFormAdminUpdateListener from './dynamic-form-admin-update-listener'
+import NavButtons from './dynamic-form-admin-nav-buttons';
 import Lightbox from '../../lightbox';
 import { adminContainer, formColumn, toolsColumn, adminHeader } from '../styles';
 
@@ -25,9 +26,8 @@ const dynamicFormAdmin = (state) => {
 				</div>
 			</div>
 			<DynamicFormAdminSingleItemUpdateListener id="DynamicFormAdminSingleItemUpdateListener" />
-			<Lightbox id="SaveForm">
-				<DynamicFormTempSave />
-			</Lightbox>
+			<DynamicFormAdminUpdateListener id="AdminOrgAndForm" />
+			<NavButtons id="AdminNavButtons" />
 		</div>
 	);
 };

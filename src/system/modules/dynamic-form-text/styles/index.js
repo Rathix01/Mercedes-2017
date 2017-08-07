@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 1200,
     margin: "0px auto",
-    padding: 5,
+    padding: "5px 20px",
     boxSizing: "border-box",
     fontFamily: "Raleway",
   }
