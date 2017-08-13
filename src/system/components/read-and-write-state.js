@@ -17,13 +17,14 @@ const EventHandlerComponent = ( InnerComponent, name ) => class extends React.Co
 		event.nativeEvent.stopImmediatePropagation();
 	}
 	handleEvent(event) {
-		this.publishState({ 
+		this.publishState({
 			event: { 
 				target: event.target, 
 				type: event.type,
 				stopPropagation: this.stopPropagation.bind(this, event),
 				preventDefault: event.preventDefault,
-				componentNode: ReactDOM.findDOMNode(this) 
+				componentNode: ReactDOM.findDOMNode(this),
+				targetValue: event.target.value,
 			}
 		});
 	}

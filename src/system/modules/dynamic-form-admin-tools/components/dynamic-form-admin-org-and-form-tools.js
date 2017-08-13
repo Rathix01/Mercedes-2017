@@ -5,15 +5,18 @@ import { genericToolsContainer, fixedContainer } from '../styles';
 import InputSelectList from '../../input-select-list';
 import InputText from '../../input-text';
 import VisibilityContainer from '../../visibility-container';
+import Text from '../../text';
 import { inputArea, createForm, orgAndForm, newForm } from '../styles';
 
 const dynamicFormAdminOrgAndFormTools = (state) => {
 	return (
 		<div className={orgAndForm}>
-			<div className={inputArea}>
-				<label>Organization</label>
-				<InputSelectList id="OrgSelect" />
-			</div>
+			<VisibilityContainer id="OrgSelectVisibility" defaultVisibility={true}>
+				<div className={inputArea}>
+					<label>Organization</label>
+					<InputSelectList id="OrgSelect" />
+				</div>
+			</VisibilityContainer>
 			<VisibilityContainer id="OrgAndFormVisibility" defaultVisibility={true}>
 				<div className={inputArea}>
 					<label>Select a Form</label>
@@ -25,6 +28,20 @@ const dynamicFormAdminOrgAndFormTools = (state) => {
 					</div>
 				</div>
 			</VisibilityContainer>
+			<VisibilityContainer id="OrgAndFormsSelectionValues">
+				<div className={inputArea}>
+					<Text id="OrgSelectionValue" />
+				</div>
+				<div className={inputArea}>
+					<label>Form:</label>
+					<Text id="FormSelectionValue" />
+				</div>
+			</VisibilityContainer>
+			<div className={inputArea}>
+				<div onClick={ state.handleEvent } id="publish-form" className={newForm}>
+					<i className="fa fa-arrow-circle-right"></i> Publish
+				</div>
+			</div>
 			<VisibilityContainer id="NewFormVisibility">
 				<div className={inputArea}>
 					<label>New Form</label>

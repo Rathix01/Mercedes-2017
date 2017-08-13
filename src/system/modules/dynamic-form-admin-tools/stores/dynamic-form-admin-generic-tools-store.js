@@ -25,6 +25,7 @@ const toNewQuestion	= (state) => ({
 	  	type: "question",
 	  	inputType: "text",
 	  	itemState: { items: [ { label: 'Yes' }, { label: 'No' } ] },
+	  	isNew: true,
 	});
 
 const genericToolsAction = Actions.filter(toGenericToolsAction);

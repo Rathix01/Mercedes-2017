@@ -5,6 +5,7 @@ import './stores/dynamic-form-admin-edit-item-store';
 import './stores/dynamic-form-admin-save-form-store';
 import './stores/dynamic-form-admin-org-names-store';
 import './stores/dynamic-form-admin-feedback-store';
+import './stores/dynamic-form-admin-publish-form-store';
 
 exports.GenericTools = GenericTools;
 export default DynamicFormAdminTools;

@@ -1,12 +1,18 @@
 import React from 'react';
 import readWrite from '../../../components/read-and-write-state';
-import { basicControls } from '../styles';
+import { basicControls, editBtn, deleteBtn, clickArea } from '../styles';
 
 const dynamicFormAdminBasicControls = (state) => {
 	return (
 		<div className={ basicControls }>
-			<button onClick={ state.handleEvent } id='basic-edit'>Edit</button>
-			<button onClick={ state.handleEvent } id='basic-delete'>Delete</button>
+			<div className={editBtn}>
+				<i className="fa fa-edit"></i>
+				<div id="basic-edit" onClick={ state.handleEvent } className={clickArea}></div>
+			</div>
+			<div className={deleteBtn}>
+				<i className="fa fa-close"></i>
+				<div id="basic-delete" onClick={ state.handleEvent } className={clickArea}></div>
+			</div>
 		</div>
 	);
 };
