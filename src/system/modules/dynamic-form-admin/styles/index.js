@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
       fontFamily: "Raleway",
       margin: 0,
       overflow: "hidden",
-      paddingLeft: 20
+      paddingLeft: 20,
+      position: "relative",
   },
   saveForm: {
     width: 400,

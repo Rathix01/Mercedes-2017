@@ -24,7 +24,7 @@ const toNewQuestion	= (state) => ({
 	  	inputType: "text",
 	  	type: "question",
 	  	inputType: "text",
-	  	itemState: { items: [ { label: 'Yes' }, { label: 'No' } ] },
+	  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 	  	isNew: true,
 	});
 

@@ -18,12 +18,9 @@ const formQuestions = nextFormActions.map(toFormQuestions);
 const formAnswers = formInputActions.scan({}, toFormAnswers);
 
 formInputActions.map(mapToNextValue).onValue((state) => {
-
-	if(state.id === "AdminSectionsPositionAwareListItem2InputFieldInput" && state.value === "123123x") {
-		console.log(state);
-		publish("AdminSectionsPositionAwareListItem3InputFieldInput", { nextValue: state.value })
+	if(state.isQuestion) {
+		publish(state.id, { value: state.event.targetValue })
 	}
-
-})//.onValue(publishToInput)
+});
 
 Bacon.combineTemplate({formQuestions, formAnswers}).map(toQuestionsAndAnswers).onValue(publish("AdminFormDisplayValues"));

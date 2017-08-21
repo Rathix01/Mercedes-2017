@@ -5,7 +5,7 @@ import publish from '../../../stores/state-store';
 import Actions from '../../../../actions/actions';
 
 import { baseForm } from './dynamic-form-admin-base-data-store';
-import { formData } from './dynamic-form-admin-store';
+import { formData, orgData } from './dynamic-form-admin-store';
 import { GenericTools } from '../../dynamic-form-admin-tools';
 import { singleItemUpdate, singleItemDelete } from './dynamic-form-admin-single-item-update-store';
 import { page } from './dynamic-form-admin-page-store';
@@ -20,6 +20,7 @@ import InputSelectList from '../../input-select-list';
 import InputRadioList from '../../input-radio-list';
 import InputTextArea from '../../input-textarea';
 
+const toForceRender = (state) => state.id === "ForceFormRender" && state.componentEvent === "component-update";
 const toOrgAndFormUpdates = (state) => state.id === "AdminOrgAndForm" && state.componentEvent === "component-update";
 const toNextForm = (formData, keys) => {
 	return { items: formData[keys.org][keys.form], isNextForm: true }; 
@@ -54,7 +55,7 @@ const publishNextForm = (prev, state) => {
 	if(state.update.nextPage === true 
 		&& state.update.targetID === undefined
 		&& state.update.delete !== true) {
-		return prev.items !== undefined ? prev.items : state.form.items;
+		return prev.items === undefined || prev.page === state.form.page ? state.form.items : prev.items;
 	} else if (state.update.delete === true) {
 		// Delete...
 		var x = R.filter( (i) => i.uniqueId !== state.update.uniqueId, prev.items);
@@ -88,8 +89,19 @@ const filterToPage = (state) => ({ items: R.filter((i) => {
 	return R.identical(parseInt(i.page), parseInt(state.page) || 1)
 }, state.items) });
 
+const toFieldsForRender = (activeForm, orgAndForm, data) => ({activeForm, orgAndForm, data});
+const getOrgData = (state) => state.data[state.orgAndForm.org]
+const getOrgColors = R.curry((state, item) => R.merge(item, { orgColor1: getOrgData(state).color1, 
+															  orgColor2: getOrgData(state).color2,
+															  orgColor3: getOrgData(state).color3,
+															  orgColor4: getOrgData(state).color4 }));
+
+const includeOrgSettings = (state) => ({ items: R.map(getOrgColors(state), state.activeForm.items) });
+
 const newQuestion = GenericTools.newQuestion;
 const orgAndFormUpdate = Actions.filter(toOrgAndFormUpdates);
+const forcedRender = Actions.filter(toForceRender);
+
 const nextForm = Bacon.when([formData.toProperty(), orgAndFormUpdate.toEventStream()], toNextForm);
 const nextFormPage = Bacon.combineTemplate({page, nextForm}).map(toNextFormPage);
 const activeForm = nextForm.toEventStream();
@@ -103,14 +115,23 @@ const pageToPublish = Bacon.when([nextFormPage.toProperty(), singleItemUpdate.to
 			.map(filterToPage)
 			.toProperty();
 
-const toPageWithValues = (values, page) => ({ items: R.map((i) => ({ ...i, itemState: { ...i.itemState, value: toValue(values, i) } }), page.items) })
-const pageAndValues = Bacon.when([ values.toProperty({}), pageToPublish.toEventStream() ], toPageWithValues);
 
-pageToPublish.map(includeComponents)
-		.map(toItems)
-		.onValue(publish("AdminSections"));
 
-const toItemValue = (values, page) => R.filter((value) => value.inputId === page.uniqueId, values);
+const adminSections = pageToPublish.map(includeComponents).map(toItems);
+const formToRender = Bacon.when(
+	[adminSections.toEventStream(), orgAndFormUpdate.toProperty(), orgData.toProperty()], toFieldsForRender,
+	[adminSections.toProperty(), orgAndFormUpdate.toProperty(), orgData.toEventStream()], toFieldsForRender,
+	[adminSections.toProperty(), orgAndFormUpdate.toProperty(), orgData.toProperty(), forcedRender.toEventStream()], toFieldsForRender);
+
+const toPageWithValues = (values, page) => R.merge(page, { activeForm: { items: R.map((i) => ({ ...i, itemState: { ...i.itemState, value: toValue(values, i) } }), page.activeForm.items) } });
+const pageAndValues = Bacon.when([ values.toProperty({}), formToRender.toEventStream() ], toPageWithValues);
+
+pageAndValues.map(includeOrgSettings).onValue(publish("AdminSections"));
+
+const toItemValue = (values, page) => values !== undefined 
+									? R.filter((value) => value.inputId === page.uniqueId, values) 
+									: page;
+
 const toValue = (values, page) => {
 	return toItemValue(values, page)[0] !== undefined ? toItemValue(values, page)[0].value  : "";
 }
@@ -119,5 +140,5 @@ activeForm.onValue(publish("ActiveFormListener"));
 nextForm.onValue(publish("NextFormListener"));
 
 module.exports = {
-	activeForm, nextForm
+	activeForm, nextForm, adminSections
 }

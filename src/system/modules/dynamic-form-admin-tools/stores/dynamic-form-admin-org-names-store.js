@@ -31,9 +31,7 @@ const urlOrg = Bacon.once(decode(getValueForKey('org'))).filter(urlHasValueFor("
 const urlForm = Bacon.once(decode(getValueForKey('form'))).filter(urlHasValueFor("form")).toProperty();
 const urlPublish = Bacon.once(decode(getValueForKey('publish'))).filter(urlHasValueFor("publish")).toProperty();
 
-
-//NOTE, DEV OPTION HERE NEEDS TO BE REPLACED WITH URL READ.
-const devOrgSet = Bacon.when([ urlOrg, data.toEventStream() ], d => d)//.debounce(200);
+const devOrgSet = Bacon.when([ urlOrg, data.toEventStream() ], d => d);
 const orgSelectAction = orgSelectActionValue.merge(devOrgSet);
 
 const formNamesForOrg = Bacon.when([ data.toProperty(), orgSelectAction.toEventStream() ], getFormsForOrg)

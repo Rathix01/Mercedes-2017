@@ -19,7 +19,6 @@ const decode = (key) => key.replace("+", " ");
 const urlHasValueFor = R.curry((prop, key) => key[prop] !== "" && key.length > 0);
 const toValuesForStamp = (stamp, data) => data.FormValues[stamp];
 
-
 const saveEvent = Actions.filter(toNavButtonEvent).filter(toSaveButtonEvent);
 const updateEvent = Actions.filter(toFormValueListenerActions);
 const urlStamp = Bacon.once(decode(getValueForKey('stamp'))).filter(urlHasValueFor("stamp")).toProperty();
@@ -31,7 +30,7 @@ const saveData = Bacon.when([ updateEvent.toProperty(),
 saveData.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormValues/${state.stamp}`).set(state.update.items);
 	return Bacon.fromPromise(p);
-})//.log('saved...');
+}).log('saved...');
 
 const values = Bacon.when([ urlStamp.toProperty(), Firebase.data.toEventStream() ], toValuesForStamp)
 

@@ -26,7 +26,8 @@ const StateProvider = ( InnerComponent ) => class extends React.Component {
 		return <InnerComponent
 			rootId={ this.getRootId() }
 			{...this.state}
-			{...this.props} />
+			{...this.props}
+			value={ this.state.value || this.props.value } />
 	}
 }
 

@@ -95,7 +95,7 @@ const formCreated = newForm.flatMap((state) => {
 		  	inputType: "text",
 		  	type: "question",
 		  	text: "A text field. Use for the collection of free text",
-		  	itemState: { items: [ { label: 'Yes' }, { label: 'No' } ] },
+		  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 		},
 		{
 			uniqueId: new Date().getTime() + 3,
@@ -117,7 +117,7 @@ const formCreated = newForm.flatMap((state) => {
 		  	inputType: "select",
 		  	type: "question",
 		  	text: "A selection field. Use for the collection of free text",
-		  	itemState: { items: [ { label: 'Yes' }, { label: 'No' } ] },
+		  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 		},
 	]);
 

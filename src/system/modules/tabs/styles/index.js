@@ -12,10 +12,11 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   label: {
-    minWidth: 80,
+    minWidth: 60,
     cursor: "pointer",
-    padding: "3px 3px 3px 10px",
+    padding: "3px",
     transition: "all 0.2s",
+    textAlign: 'center',
 
     ":hover": {
       background: Variables.colors.darkGray,

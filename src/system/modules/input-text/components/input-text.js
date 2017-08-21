@@ -6,6 +6,7 @@ import { textInput } from '../styles';
 const getValue = (state) => state.nextValue !== undefined ? state.nextValue : state.value;
 
 const InputText = (state) => {
+	//console.log(state)
 	return <input type={ state.type || 'text' }  
 									className={ `${ getClassName(state) } ${ textInput }` } 
 									placeholder={ state.placeholder }
