@@ -19,6 +19,7 @@ const formAnswers = formInputActions.scan({}, toFormAnswers);
 
 formInputActions.map(mapToNextValue).onValue((state) => {
 	if(state.isQuestion) {
+		console.log('???')
 		publish(state.id, { value: state.event.targetValue })
 	}
 });

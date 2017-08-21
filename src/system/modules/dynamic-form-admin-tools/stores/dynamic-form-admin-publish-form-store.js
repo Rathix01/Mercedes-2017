@@ -8,7 +8,7 @@ import { orgAndForm, urlPublish } from './dynamic-form-admin-org-names-store';
 const toOrgAndFormTools = (state) => state.component === "DynamicFormAdminOrgAndFormTools";
 const toPublishFormAction = (state) => state.event.target.id === "publish-form";
 const openForm = (state) => window.open(`${ window.location.origin }/?org=${encodeToUrl(state.orgAndForm.org)}&form=${encodeToUrl(state.orgAndForm.form)}&stamp=${new Date().getTime()}&publish=true`);
-const encodeToUrl = (state) => state.replace(" ", "+");
+const encodeToUrl = (state) => state.split(" ").join('+');
 const isPublish = (state) => state === 'true';
 
 const publishFormAction = Actions.filter(toOrgAndFormTools).filter(toPublishFormAction);

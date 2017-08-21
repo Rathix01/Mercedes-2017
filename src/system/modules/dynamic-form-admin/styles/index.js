@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: 'rgba(200,200,200, 0.6)',
     border: `solid 1px ${ Variables.colors.gray }`,
+    position: 'relative',
   },
   btn: {
     fontSize: 20,
@@ -88,6 +89,20 @@ const styles = StyleSheet.create({
   },
   prevBtn: {
     margin:"10px 5px",
+  },
+  pageNumber: {
+    position: "absolute",
+    right: 440,
+    top: 15,
+    fontFamily: "Raleway",
+    background: Variables.colors.blue,
+    color: Variables.colors.white,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    textAlign: "center",
+    paddingTop: 5,
+    boxSizing: "border-box",
   }
 });
 
@@ -104,4 +119,5 @@ module.exports = {
   center: css(styles.center),
   nextBtn: css(styles.nextBtn, styles.btn),
   prevBtn: css(styles.prevBtn, styles.btn),
+  pageNumber: css(styles.pageNumber),
 }

@@ -10,6 +10,11 @@ const StateProvider = ( InnerComponent ) => class extends React.Component {
 	}
 	update(state) {
 		if( state[this.props.id] && state[this.props.id].version !== this.state.version ) {
+			
+			if(this.props.id === "AdminSectionsPositionAwareListItem2InputField") {
+			console.log(this.props.id, state[this.props.id]);
+		}
+
 			this.setState(state[this.props.id] || {});
 		}
 	}

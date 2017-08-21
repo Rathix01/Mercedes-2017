@@ -83,7 +83,7 @@ const getComponent = (key) => {
 };
 
 const toFormData = (state) => ({ items: R.map(getComponents, R.values(state.items)) });
-const toNewQuestion	= (form, update) => ({ form: { items: R.concat(form.items, update) }, update:update  })
+const toNewQuestion	= (form, update) => ({ form: { items: R.concat(form.items, update), page: update.page }, update:update  })
 const toNextFormPage = (state) => ({ page: state.page, items: state.nextForm.items, nextForm: state.nextForm.isNextForm || false });
 const filterToPage = (state) => ({ items: R.filter((i) => {
 	return R.identical(parseInt(i.page), parseInt(state.page) || 1)
@@ -97,6 +97,7 @@ const getOrgColors = R.curry((state, item) => R.merge(item, { orgColor1: getOrgD
 															  orgColor4: getOrgData(state).color4 }));
 
 const includeOrgSettings = (state) => ({ items: R.map(getOrgColors(state), state.activeForm.items) });
+const toNewQuestionForPage = (page, question) => R.merge(question, { page: page }); 
 
 const newQuestion = GenericTools.newQuestion;
 const orgAndFormUpdate = Actions.filter(toOrgAndFormUpdates);
@@ -105,28 +106,22 @@ const forcedRender = Actions.filter(toForceRender);
 const nextForm = Bacon.when([formData.toProperty(), orgAndFormUpdate.toEventStream()], toNextForm);
 const nextFormPage = Bacon.combineTemplate({page, nextForm}).map(toNextFormPage);
 const activeForm = nextForm.toEventStream();
+const newQuestionForPage = Bacon.when([ page.toProperty(), newQuestion.toEventStream() ], toNewQuestionForPage);
 
 const pageToPublish = Bacon.when([nextFormPage.toProperty(), singleItemUpdate.toEventStream()], toFormWithUpdate,
 		   [nextFormPage.toProperty(), singleItemDelete.toEventStream()], toFormWithDelete,
-		   [nextFormPage.toProperty(), newQuestion.toEventStream()], toNewQuestion,
+		   [nextFormPage.toProperty(), newQuestionForPage.toEventStream()], toNewQuestion,
 		   [nextFormPage.toEventStream()], (form) => ({ update: { nextPage: true }, form }))
 			.scan({}, toNextFormAndPage)
 			.skip(1)
 			.map(filterToPage)
 			.toProperty();
 
-
-
 const adminSections = pageToPublish.map(includeComponents).map(toItems);
 const formToRender = Bacon.when(
 	[adminSections.toEventStream(), orgAndFormUpdate.toProperty(), orgData.toProperty()], toFieldsForRender,
 	[adminSections.toProperty(), orgAndFormUpdate.toProperty(), orgData.toEventStream()], toFieldsForRender,
 	[adminSections.toProperty(), orgAndFormUpdate.toProperty(), orgData.toProperty(), forcedRender.toEventStream()], toFieldsForRender);
-
-const toPageWithValues = (values, page) => R.merge(page, { activeForm: { items: R.map((i) => ({ ...i, itemState: { ...i.itemState, value: toValue(values, i) } }), page.activeForm.items) } });
-const pageAndValues = Bacon.when([ values.toProperty({}), formToRender.toEventStream() ], toPageWithValues);
-
-pageAndValues.map(includeOrgSettings).onValue(publish("AdminSections"));
 
 const toItemValue = (values, page) => values !== undefined 
 									? R.filter((value) => value.inputId === page.uniqueId, values) 
@@ -135,7 +130,10 @@ const toItemValue = (values, page) => values !== undefined
 const toValue = (values, page) => {
 	return toItemValue(values, page)[0] !== undefined ? toItemValue(values, page)[0].value  : "";
 }
+const toPageWithValues = (values, page) => R.merge(page, { activeForm: { items: R.map((i) => ({ ...i, itemState: { ...i.itemState, value: toValue(values, i) } }), page.activeForm.items) } });
+const pageAndValues = Bacon.when([ values.toProperty({}), formToRender.toEventStream() ], toPageWithValues);
 
+pageAndValues.map(includeOrgSettings).onValue(publish("AdminSections"));
 activeForm.onValue(publish("ActiveFormListener"));
 nextForm.onValue(publish("NextFormListener"));
 

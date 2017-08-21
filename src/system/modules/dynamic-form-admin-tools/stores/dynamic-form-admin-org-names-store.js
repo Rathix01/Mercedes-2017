@@ -19,7 +19,7 @@ const getQueryStringValue = (key) => readQueryString().length > 0
 const getValueForKey = (key) => getQueryStringValue(key).length > 0
 									? getQueryStringValue(key)[0].split("=")[1] : "";						
 
-const decode = (key) => key.replace("+", " ");
+const decode = (key) => key.split("+").join(" "); //key.replace("+", " ");
 const urlHasValueFor = R.curry((prop, key) => key[prop] !== "" && key.length > 0);
 const toUrlValue = (key) => ({ value: key })
 

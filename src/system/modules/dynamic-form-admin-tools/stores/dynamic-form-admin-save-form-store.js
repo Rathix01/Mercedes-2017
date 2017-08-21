@@ -61,7 +61,7 @@ const formSaved = saveForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.orgAndForm.form}`)
 			.set(state.data);
 	return Bacon.fromPromise(p);
-})
+});
 
 const formCreated = newForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.formName.event.target.value}`).set([{
