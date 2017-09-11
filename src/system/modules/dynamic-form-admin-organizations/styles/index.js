@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: "Raleway",
   },
+  tabArea: {
+    padding: 10,
+  },
   newForm: {
     
   },
@@ -91,6 +94,23 @@ const styles = StyleSheet.create({
     maxWidth: 245,
     margin: "10px 0px 5px",
     boxSizing: "boreder-box",
+  },
+  formsListTop: {
+    marginTop: 20,
+    borderTop: `solid 1px ${ Variables.colors.gray }`,
+  },
+  formsList: {
+    margin: 10,
+    fontFamily: "Raleway",
+  },
+  submittedFormItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 3,
+    borderBottom: `solid 1px ${ Variables.colors.gray }`,
+  },
+  itemCell: {
+    flex: 1,
   }
 });
 
@@ -99,10 +119,15 @@ module.exports = {
   adminContainer: css(styles.adminContainer),
   header: css(styles.header),
   inputArea: css(styles.inputArea),
+  tabArea: css(styles.tabArea),
   inputAreaSection: css(styles.inputAreaSection),
   createForm: css(styles.createForm),
   newForm: css(styles.newForm),
   btnArea: css(styles.btnArea),
   positiveNotification: css(styles.positiveNotification),
   saving: css(styles.saving),
+  formsListTop: css(styles.formsListTop),
+  formsList: css(styles.formsList),
+  submittedFormItem: css(styles.submittedFormItem),
+  itemCell: css(styles.itemCell),
 }

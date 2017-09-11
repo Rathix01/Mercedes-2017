@@ -10,7 +10,9 @@ const toTabChangeAction = (state) => state.component === "TabPanelsAndLabels";
 const toTabChangeListenerAction = (state) => state.component === "TabChangeListener" && state.componentEvent === "component-update";
 const setTabTarget = (allTabs, target) => mapIndexed((t, idx) => ({ target: t === target.tab, idx }), allTabs.labels);
 const toTabTarget = (allTabs, target) => {
-	return ({ tab: `TabPanelVisibility${ R.head(R.filter((t) => t.target, setTabTarget(allTabs, target))).idx }` })
+	const item = R.head(R.filter((t) => t.target, setTabTarget(allTabs, target)));
+	const i = item ? item.idx : 0
+	return ({ tab: `TabPanelVisibility${ i }` })
 };
 
 

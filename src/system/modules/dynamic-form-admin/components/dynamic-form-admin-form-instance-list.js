@@ -6,9 +6,9 @@ import List from '../../list';
 
 const dynamicFormAdminInstanceList = (state) => {
 	return (
-			<VisibilityContainer id="InstanceListVisibility">
-				
-			</VisibilityContainer>
+		<VisibilityContainer id="InstanceListVisibility">
+			
+		</VisibilityContainer>
 	);
 }
 

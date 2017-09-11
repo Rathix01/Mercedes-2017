@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
   toolsContainer: {
     position: 'fixed',
     border: "solid 1px #ccc",
-    marginTop: 10,
     padding: 10,
     boxSizing: "border-box",
     width: "350px",

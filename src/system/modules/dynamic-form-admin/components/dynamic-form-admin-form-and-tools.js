@@ -8,7 +8,7 @@ import { adminContainer, formColumn, toolsColumn } from '../styles';
 
 const dynamicFormAdminFormAndTools = (state) => {
 	return (
-		<VisibilityContainer id="FormAndToolsVisibility" defaultVisibility={true}>
+		<VisibilityContainer id="FormAndToolsVisibility">
 			<div className={ adminContainer }>
 				<div className={ formColumn }>
 		        	<PositionAwareList id="AdminSections" isRoot={true}>

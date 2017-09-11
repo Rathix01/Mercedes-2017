@@ -14,7 +14,7 @@ const renderChild = (state, c) => {
 }
 
 const dynamicFormSection = (state) => {
-	return <div className={ state.index % 2 ? question : altQuestion }>
+	return <div className={ state.index % 2 ? question : question }>
 		<InputField id={ `${state.id}InputField`  } label={ state.title } color={state.orgColor4}>
 			{ renderChild(state, state.itemInput) }
 		</InputField>

@@ -21,5 +21,6 @@ const formIsInPublishMode = urlPublish.filter(isPublish);
 formIsInPublishMode.map({ display: false }).onValue(publish("BasicControlsVisibility"));
 formIsInPublishMode.map({ display: false }).onValue(publish("ToolsColumnVisibility"));
 formIsInPublishMode.map({ display: false }).onValue(publish("AdminHeaderVisibility"));
+formIsInPublishMode.map({ display: false }).onValue(publish("DynamicFormAdminOrganizationDisplayVisibility"));
 formIsInPublishMode.map({ display: true }).onValue(publish("SaveInstanceButtonVisibility"));
-
+formIsInPublishMode.map({ display: true }).onValue(publish("FormAndToolsVisibility"));

@@ -51,9 +51,6 @@ color3.onValue(publish("OrgColor3"));
 color4.onValue(publish("DisplayOrgColor4"));
 color4.onValue(publish("OrgColor4"));
 
-// color5.onValue(publish("DisplayOrgColor5"));
-// color5.onValue(publish("OrgColor5"));or
-
 var orgColorUpdate = Bacon.when([ orgDetail.toProperty(),
 			 						color1.toProperty(), 
 			 						color2.toProperty(), 

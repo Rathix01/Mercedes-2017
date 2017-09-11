@@ -1,12 +1,31 @@
 import React from 'react';
-import moduleStatepublisher from '../../../components/read-and-write-state';
-import { content, menuItem } from '../styles';
+import readAndWrite from '../../../components/read-and-write-state';
+import { content, menuItem, icon, eventHandlerElement } from '../styles';
 
 const dynamicFormAdminMenu = (state) => {
 	return <div className={content}>
-		<div id="Form" onClick={state.handleEvent} className={menuItem}>Form</div>
-		<div id="Org" onClick={state.handleEvent} className={menuItem}>Organizations</div>
+		<div className={menuItem}>
+			<div className={icon}>
+				<i className="fa fa-home"></i>&nbsp;
+			</div>
+			<label>Home</label>
+			<div className={ eventHandlerElement } id="Org" onClick={state.handleEvent}></div>
+		</div>
+		<div className={menuItem}>
+			<div className={icon}>
+				<i className="fa fa-file-text-o"></i>&nbsp;
+			</div>
+			<label>Forms</label>
+			<div className={ eventHandlerElement } id="Instances" onClick={state.handleEvent}></div>
+		</div>
+		<div className={menuItem}>
+			<div className={icon}>
+				<i className="fa fa-wrench"></i>&nbsp;
+			</div>
+			<label>Form Admin</label>
+			<div className={ eventHandlerElement } id="Form" onClick={state.handleEvent}></div>
+		</div>
 	</div>
 };
 
-module.exports = moduleStatepublisher(dynamicFormAdminMenu, "DynamicFormAdminMenu");
+module.exports = readAndWrite(dynamicFormAdminMenu, "DynamicFormAdminMenu");

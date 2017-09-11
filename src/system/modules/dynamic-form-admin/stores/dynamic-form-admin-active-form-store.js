@@ -72,14 +72,14 @@ const publishNextForm = (prev, state) => {
 				? mergeUpdate(prev, state.update) 
 				: mergeUpdate(state.form, state.update);
 	}
-}
+};
 const toNextFormAndPage = (prev, state) => ({ page: state.form.page, update: state.update, items: publishNextForm(prev, state) })
 const getComponent = (key) => {
 	return {
 		"header": DynamicFormHeader,
 		"text": DynamicFormText,
 		"question": DynamicFormQuestion
-	}[key]
+	}[key];
 };
 
 const toFormData = (state) => ({ items: R.map(getComponents, R.values(state.items)) });
@@ -90,7 +90,7 @@ const filterToPage = (state) => ({ items: R.filter((i) => {
 }, state.items) });
 
 const toFieldsForRender = (activeForm, orgAndForm, data) => ({activeForm, orgAndForm, data});
-const getOrgData = (state) => state.data[state.orgAndForm.org]
+const getOrgData = (state) => state.data[state.orgAndForm.org];
 const getOrgColors = R.curry((state, item) => R.merge(item, { orgColor1: getOrgData(state).color1, 
 															  orgColor2: getOrgData(state).color2,
 															  orgColor3: getOrgData(state).color3,
@@ -136,6 +136,7 @@ const pageAndValues = Bacon.when([ values.toProperty({}), formToRender.toEventSt
 pageAndValues.map(includeOrgSettings).onValue(publish("AdminSections"));
 activeForm.onValue(publish("ActiveFormListener"));
 nextForm.onValue(publish("NextFormListener"));
+
 
 module.exports = {
 	activeForm, nextForm, adminSections

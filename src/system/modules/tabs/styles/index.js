@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottom: `solid 1px ${ Variables.colors.gray }`,
     marginBottom: 3,
+    fontFamily: 'Raleway',
   },
   label: {
     minWidth: 60,
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     padding: "3px",
     transition: "all 0.2s",
     textAlign: 'center',
+    padding: "8px 8px 8px 8px",
 
     ":hover": {
       background: Variables.colors.darkGray,

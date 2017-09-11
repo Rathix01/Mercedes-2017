@@ -21,10 +21,12 @@ const toPositions = (a, b) => {
 };
 
 const toPositionUpdates = (prev, state) => {
-	return R.merge(prev, { [state.key]: R.merge(state, 
+	return R.merge(prev, { [state.uniqueId]: R.merge(state, 
 		{ 
-			isUpdate: prev[state.key] === undefined || (prev[state.key].next !== state.prev) || prev[state.key].uniqueId !== state.uniqueId, 
-		 	prev: prev[state.key] === undefined ? state.prev : prev[state.key].next,
+			isUpdate: prev[state.uniqueId] === undefined 
+				|| (prev[state.uniqueId].next !== state.prev && state.prev !== state.next) 
+				|| prev[state.uniqueId].uniqueId !== state.uniqueId, 
+		 	prev: prev[state.uniqueId] === undefined ? state.prev : prev[state.uniqueId].next,
 		 	next: state.prev
 		}) 
 	});
@@ -41,36 +43,83 @@ const toPositionTweens = (state) => {
 			fn: "fromTo", 
 			label: `DetailItemsPositionUpdateA${state.index}`, 
 			target: `${ state.key }Animation`,
-			from: { y: state.next, opacity: getOpacity(state), z: (100 - state.index) }, 
-			to: { y: state.next, opacity: getOpacity(state) }
+			from: { y: state.prev, opacity: getOpacity(state), z: (100 - state.index) }, 
+			to: { y: state.prev, opacity: getOpacity(state) }
 		}, {
 			time: 0.4,
 			fn: "fromTo", 
 			label: `DetailItemsPositionUpdateB${state.index}`,
 			target: `${ state.key }Animation`,
-			from: { y: state.next, opacity: getOpacity(state)  }, 
-			to: { y: state.next, opacity: 1 }
+			from: { y: state.prev, opacity: getOpacity(state)  }, 
+			to: { y: state.position, opacity: 1 }
 		}]
 	})
 };
 
-//delay required here for a render so that event.clientHeight above can be measured;
+
+const getClientTopPosition = (state) => state.event === undefined ? 0 : Math.round(state.event.getBoundingClientRect().top);
+const getClientHeight = (state) => state.event === undefined ? 0 : Math.round(state.event.getBoundingClientRect().height);
+
+const toHeights = (prev, next) => R.merge(prev, { [next.id]: { uniqueId: next.uniqueId,
+															   key: next.id, 
+															   position: getClientTopPosition(next),
+															   height: getClientHeight(next),
+															   index: parseInt(next.index) } })
+
+const toValidHeights = (prev, next) => R.filter((i) => i.uniqueId !== undefined, toHeights(prev, next));
+	
+
+const filterToChanges = (state) => R.filter((i) => i.prev !== i.position, state)
+const filterByIndex = (prev, next) => {
+	return R.filter((p) => { return p.index === next.index }, prev);
+}
+const filterByUniqueId = (ids, next) => {
+	return R.filter((i) => { return i === next.uniqueId }, ids);
+}
+const filterEmpty = (state) => state.length !== 0;
+const filterToPrev = (prev, next) => {
+	return (filterByIndex(prev.updates, next).length >= 1 )
+									? ( filterByUniqueId(prev.ids, next).length !== 0 )
+									   ? R.head(filterByIndex(prev.updates, next)).position
+									   : -1
+									: -1;
+};
+
+const getPosition = (prev, next, item) => {
+	var x = R.reduce(( sum, item ) => { return item.height + sum }, 0, R.filter((i) => i.index < item.index, R.values(next)));
+	return prev[next.index] === undefined ? x : next.position;
+};
+
+const toNext = (prev, next) => {
+	return R.map((i) => {
+		return R.merge(i, { prev: filterToPrev(prev, i), position: getPosition(prev, next, i) })
+	}, R.values(next));
+}
+
+const toAllIds = (prev, next) => R.uniq(R.concat(prev.ids, R.map(R.prop("uniqueId"), R.values(next))));
+const toPrevAndNext = (prev, next) => ({ ids: toAllIds(prev, next), updates: toNext(prev, next) })
+
 const positionAwareAction = Actions.filter(toPositionAwareListItem);
-const positionAwareListItemActions = positionAwareAction.delay(20);
+const positionAwareListItemActions = positionAwareAction;
 const itemMount = positionAwareAction.filter(toItemMount);
 itemMount.onValue(toInitialHide);
 
-const resetPositions = positionAwareListItemActions.debounce(10).map({});
+const resetPositions = positionAwareListItemActions.map({});
 const positions = positionAwareListItemActions.toEventStream().merge(resetPositions.toEventStream()).scan({}, toPositions)
 const positionUpdates = positions.filter(toHasKey).scan({}, toPositionUpdates);
 
+const dimensions = positionAwareListItemActions.toEventStream().merge(resetPositions.debounce(5).toEventStream()).scan({}, toValidHeights)
 
-positionUpdates.map(R.values)
-			   .flatMap(Bacon.fromArray)
-			   .filter(R.prop("isUpdate"))
-			   .map(toPositionTweens)
-			   .onValue(toTimeline);
+dimensions
+	   .scan({ ids: [], updates:[] }, toPrevAndNext)
+	   .map(R.prop("updates"))
+ 	   .map(filterToChanges)
+ 	   .filter(filterEmpty)
+ 	   .flatMap(Bacon.fromArray)
+ 	   .map(toPositionTweens)
+ 	   .onValue(toTimeline);
 
 module.exports = {
-	positions, positionAwareListItemActions
+	positions, 
+	positionAwareListItemActions
 }

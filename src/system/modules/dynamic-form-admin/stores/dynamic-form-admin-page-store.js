@@ -33,7 +33,7 @@ const pageUpdate = Bacon.when([formData.toProperty(),
 							   orgAndFormUpdate.toProperty(), 
 							   pageChange.toEventStream()], toNextPage)
 
-const page = pageUpdate.scan(1, changePage).log('page');
+const page = pageUpdate.scan(1, changePage)//.log('page');
 
 page.map(toValue).onValue(publish("AdminFormDisplayValues"))
 

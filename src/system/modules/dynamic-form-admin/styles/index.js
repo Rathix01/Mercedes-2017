@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
       background: Variables.colors.black,
       color: Variables.colors.white,
       fontFamily: "Raleway",
-      margin: 0,
+      margin: "0 0 10px 0",
       overflow: "hidden",
       paddingLeft: 20,
       position: "relative",
