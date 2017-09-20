@@ -21,6 +21,9 @@ const dynamicFormAdminGenericTools = (state) => {
 					<DynamicFormAdminFormValues id="DynamicFormAdminFormValues" />
 				</Tabs>
 				<div className={ btnArea }>
+					<div onClick={ state.handleEvent } id="new-page" className={newForm}>
+						<i className="fa fa-plus-circle"></i> New Page
+					</div>
 					<div onClick={ state.handleEvent } id="new-question" className={newForm}>
 						<i className="fa fa-plus-circle"></i> New Item
 					</div>

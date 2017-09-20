@@ -22,7 +22,7 @@ const dynamicFormAdminEditForm = (state) => {
 			<div className={row}>
 				<label>Input Type</label>
 				<div> 
-					<InputSelectList id="ComponentInputType" items={ [ "", "text", "select", "radio", "text area" ] } /> 
+					<InputSelectList id="ComponentInputType" items={ [ "", "text", "select", "radio", "text area", "date", "checkbox" ] } /> 
 				</div>
 			</div>
 			<div className={row}>
@@ -35,6 +35,12 @@ const dynamicFormAdminEditForm = (state) => {
 				<label>Text</label>
 				<div> 
 					<InputText id="ComponentText" /> 
+				</div>
+			</div>
+			<div className={row}>
+				<label>Options</label>
+				<div> 
+					<InputText id="ComponentOptions" />  
 				</div>
 			</div>
 			<div className={row}>

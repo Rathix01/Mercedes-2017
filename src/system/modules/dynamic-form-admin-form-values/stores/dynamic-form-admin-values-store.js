@@ -6,7 +6,17 @@ import Actions from '../../../../actions/actions';
 const toNextFormListenerActions = (state) => state.component === "DynamicFormAdminNextFormListener" && state.componentEvent === "component-update";
 const toFormInputActions = (state) => state.id.startsWith("AdminSections") && (state.label !== undefined || (state.event && state.event.target));
 const toFormQuestions = (state) => R.filter( (i) => i.componentType === "question", state.items )
-const toFormAnswers = (prev, next) => R.merge(prev, { [next.uniqueId]: { value: next.label || next.event.target.value  } });
+const toFormAnswers = (prev, next) => R.merge(prev, { [next.uniqueId]: { value: next.label || next.text || next.event.target.value  } });
+
+// Will probably still need this.
+// const toValueByType = (state) => {
+// 	return {
+// 		"InputCheckbox": state.text,
+// 		"InputRadioButton": state.text,
+// 		default
+// 	}[state.component]
+// }
+
 const toValue = (template, item) =>  template.formAnswers[item.uniqueId] === undefined ? "" : template.formAnswers[item.uniqueId].value
 const toLabelAndValue = R.curry((template, item) => ({ label: item.title, value: toValue(template, item), inputId: item.uniqueId }));
 const toQuestionsAndAnswers = (template) => ({ items: R.map(toLabelAndValue(template), template.formQuestions) });
@@ -19,7 +29,13 @@ const formAnswers = formInputActions.scan({}, toFormAnswers);
 
 formInputActions.map(mapToNextValue).onValue((state) => {
 	if(state.isQuestion) {
-		publish(state.id, { value: state.event.targetValue })
+		//hacky whacky
+		//needs to be more flexible.
+		if(state.component === "InputCheckbox" || state.component === "InputRadio") {
+			publish(state.id, { value: state.text });
+		} else {
+			publish(state.id, { value: state.event.targetValue })
+		}
 	}
 });
 

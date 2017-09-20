@@ -3,6 +3,7 @@ import R from 'ramda';
 import { toTimeline } from '../../../stores/animation-store';
 import Actions from '../../../../actions/actions';
 import publish from '../../../stores/state-store';
+import { nextPage } from './dynamic-form-admin-new-page-store';
 
 import DynamicFormQuestion from '../../dynamic-form-question';
 import InputText from '../../input-text';
@@ -30,13 +31,15 @@ const toNewQuestion	= (state) => ({
 
 const genericToolsAction = Actions.filter(toGenericToolsAction);
 const newQuestionAction = genericToolsAction.filter(toNewQuestionAction);
-const newQuestion = newQuestionAction.map(toNewQuestion);
+const nextQuestion = newQuestionAction.map(toNewQuestion);
 
 const newFormAction = genericToolsAction.filter(toNewFormAction);
 const displayNewForm = newFormAction.scan( { displayNewForm: false }, toggleDisplay);
 
 displayNewForm.map(toDisplayIf(true)).onValue(publish("NewFormVisibility"));
 displayNewForm.map(toDisplayIf(false)).onValue(publish("OrgAndFormVisibility"));
+
+const newQuestion = nextQuestion.merge(nextPage);
 
 module.exports = {
 	newQuestion

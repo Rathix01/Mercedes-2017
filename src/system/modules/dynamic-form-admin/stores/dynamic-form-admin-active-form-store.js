@@ -18,7 +18,9 @@ import DynamicFormText from '../../dynamic-form-text';
 import InputText from '../../input-text';
 import InputSelectList from '../../input-select-list';
 import InputRadioList from '../../input-radio-list';
+import InputCheckboxList from '../../input-checkbox-list';
 import InputTextArea from '../../input-textarea';
+import InputDatePicker from '../../input-date-picker';
 
 const toForceRender = (state) => state.id === "ForceFormRender" && state.componentEvent === "component-update";
 const toOrgAndFormUpdates = (state) => state.id === "AdminOrgAndForm" && state.componentEvent === "component-update";
@@ -27,7 +29,9 @@ const toNextForm = (formData, keys) => {
 }
 const toActiveForm = (prev, next) => next.items !== undefined ? next : { items: R.concat(prev.items, next) }; 
 const toNextItems = R.curry((update, item) => {
-	return update.targetID !== item.uniqueId ? item : R.merge(item, R.omit("targetID", update))
+	return update.targetID !== item.uniqueId 
+		? item 
+		: R.merge(item, R.omit("targetID", update))
 });
 const mergeUpdate = (form, update) => R.map(toNextItems(update), form.items);
 const toItems = (state) => ({ items: state });
@@ -43,7 +47,9 @@ const getInput = (state) => {
 		"text": InputText,
 		"select": InputSelectList,
 		"radio": InputRadioList,
-		"text area": InputTextArea
+		"text area": InputTextArea,
+		"date": InputDatePicker,
+		"checkbox": InputCheckboxList,
 	}[state.inputType];
 };
 const getComponents = (item) => R.merge(item, { dataComponent: getDataComponent(item), itemInput: getInput(item) });
@@ -55,7 +61,9 @@ const publishNextForm = (prev, state) => {
 	if(state.update.nextPage === true 
 		&& state.update.targetID === undefined
 		&& state.update.delete !== true) {
-		return prev.items === undefined || prev.page === state.form.page ? state.form.items : prev.items;
+		return prev.items === undefined || prev.page === state.form.page
+			? state.form.items 
+			: prev.items;
 	} else if (state.update.delete === true) {
 		// Delete...
 		var x = R.filter( (i) => i.uniqueId !== state.update.uniqueId, prev.items);
@@ -73,7 +81,9 @@ const publishNextForm = (prev, state) => {
 				: mergeUpdate(state.form, state.update);
 	}
 };
-const toNextFormAndPage = (prev, state) => ({ page: state.form.page, update: state.update, items: publishNextForm(prev, state) })
+const toNextFormAndPage = (prev, state) => {
+	return ({ page: state.form.page, update: state.update, items: publishNextForm(prev, state) })
+}
 const getComponent = (key) => {
 	return {
 		"header": DynamicFormHeader,
@@ -83,7 +93,7 @@ const getComponent = (key) => {
 };
 
 const toFormData = (state) => ({ items: R.map(getComponents, R.values(state.items)) });
-const toNewQuestion	= (form, update) => ({ form: { items: R.concat(form.items, update), page: update.page }, update:update  })
+const toNewQuestion	= (form, update) => ({ form: { items: R.concat(form.items, update), page: update.page }, update:update  });
 const toNextFormPage = (state) => ({ page: state.page, items: state.nextForm.items, nextForm: state.nextForm.isNextForm || false });
 const filterToPage = (state) => ({ items: R.filter((i) => {
 	return R.identical(parseInt(i.page), parseInt(state.page) || 1)
@@ -97,7 +107,9 @@ const getOrgColors = R.curry((state, item) => R.merge(item, { orgColor1: getOrgD
 															  orgColor4: getOrgData(state).color4 }));
 
 const includeOrgSettings = (state) => ({ items: R.map(getOrgColors(state), state.activeForm.items) });
-const toNewQuestionForPage = (page, question) => R.merge(question, { page: page }); 
+const toNewQuestionForPage = (page, question) => {
+	return R.merge(question, { page: question.isNewPage ? question.page : page });
+}
 
 const newQuestion = GenericTools.newQuestion;
 const orgAndFormUpdate = Actions.filter(toOrgAndFormUpdates);
@@ -112,10 +124,12 @@ const pageToPublish = Bacon.when([nextFormPage.toProperty(), singleItemUpdate.to
 		   [nextFormPage.toProperty(), singleItemDelete.toEventStream()], toFormWithDelete,
 		   [nextFormPage.toProperty(), newQuestionForPage.toEventStream()], toNewQuestion,
 		   [nextFormPage.toEventStream()], (form) => ({ update: { nextPage: true }, form }))
+.log('---')
 			.scan({}, toNextFormAndPage)
 			.skip(1)
 			.map(filterToPage)
 			.toProperty();
+
 
 const adminSections = pageToPublish.map(includeComponents).map(toItems);
 const formToRender = Bacon.when(

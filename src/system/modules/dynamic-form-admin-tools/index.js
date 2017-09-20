@@ -6,6 +6,7 @@ import './stores/dynamic-form-admin-save-form-store';
 import './stores/dynamic-form-admin-org-names-store';
 import './stores/dynamic-form-admin-feedback-store';
 import './stores/dynamic-form-admin-publish-form-store';
+import './stores/dynamic-form-admin-new-page-store';
 
 exports.GenericTools = GenericTools;
 export default DynamicFormAdminTools;

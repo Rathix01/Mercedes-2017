@@ -103,6 +103,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 5,
     boxSizing: "border-box",
+  },
+  positiveNotification: {
+    background: Variables.colors.green,
+    color: Variables.colors.white,
+    padding: 10,
+    maxWidth: 245,
+    margin: "10px 0px 5px",
+    boxSizing: "boreder-box",
+    fontFamily: "Raleway",
+  },
+  saving: {
+    background: Variables.colors.darkGray,
+    color: Variables.colors.white,
+    padding: 10,
+    maxWidth: 245,
+    margin: "10px 0px 5px",
+    boxSizing: "boreder-box",
+    fontFamily: "Raleway",
+  },
+  fixedContainer: {
+    position: 'absolute',
+    left: 10,
+    width: 200
   }
 });
 
@@ -120,4 +143,7 @@ module.exports = {
   nextBtn: css(styles.nextBtn, styles.btn),
   prevBtn: css(styles.prevBtn, styles.btn),
   pageNumber: css(styles.pageNumber),
+  positiveNotification: css(styles.positiveNotification),
+  saving: css(styles.saving),
+  fixedContainer: css(styles.fixedContainer),
 }

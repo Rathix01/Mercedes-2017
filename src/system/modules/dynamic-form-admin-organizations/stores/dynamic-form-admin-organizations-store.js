@@ -21,15 +21,6 @@ const orgValueUpdate = orgValue.filter(isOrgValueUpdate).toEventStream().skip(1)
 const orgDetail = orgValueUpdate.flatMap(toRequestOrgDetails).map(toValue);
 orgDetail.onValue(publish("DynamicFormAdminOrgDetails"));
 
-// window.injectOrg = () => {
-// 	Firebase.db.ref(`/Orgs/St Vincents/`).set({ 
-// 		displayName: "St Vincents",
-// 		formsKey: "St Vincents",
-// 		color1: "#48378D",
-// 		color2: "#0C68AF",
-// 	});
-// }
-
 module.exports = {
 	orgDetail
 }

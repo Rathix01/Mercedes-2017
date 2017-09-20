@@ -16,4 +16,6 @@ const formInstances = Firebase.data.map(R.prop("FormInstances"));
 const formsForOrg = Bacon.combineTemplate({ formInstances, orgDetail }).map(toFormsForOrg);
 const formsList = formsForOrg.map(toFormListData).map(toFormItems).map(toFormList);
 
+//formsList.log('?')
+
 formsList.onValue(publish("OrgFormsListSmall"));

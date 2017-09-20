@@ -23,7 +23,7 @@ const prepareFormForSave = (form, formDefinition, orgAndForm, saveEvent) => {
 	const all = R.concat(form.items, formDefinition.items);
 
 	const nextSet = R.filter((item) => {
-		if(form.items[0].page === item.page ) {
+		if(form.items[0] && form.items[0].page === item.page ) {
 			return itemIsPresent(form, item)
 		}
 		return true;
@@ -45,7 +45,7 @@ const saveFormAction = genericToolsAction.filter(toSaveFormAction);
 const newFormAction = genericToolsAction.filter(toNewFormAction);
 const newFormNameAction = Actions.filter(toNewFormNameAction);
 const newFormSaveAction = Actions.filter(toNewFormSaveAction);
-const formUpdate = Actions.filter(toActiveForm)
+const formUpdate = Actions.filter(toActiveForm);
 
 const saveForm = Bacon.when([ formAction,
 							  formUpdate.toProperty(),
@@ -55,7 +55,6 @@ const saveForm = Bacon.when([ formAction,
 const newForm = Bacon.when([ newFormNameAction.toProperty(), 
 							 orgAndForm.toProperty(),
 							 newFormSaveAction.toEventStream() ], toNewFormDefinition);
-
 
 const formSaved = saveForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.orgAndForm.form}`)

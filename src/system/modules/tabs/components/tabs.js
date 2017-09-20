@@ -6,7 +6,7 @@ import TabChangeListener from './tab-change-listener';
 const tabs = (state) => {
 	return (
 		<div>
-			<TabPanelsAndLabels id="ToolTabsPanelsAndLabels" items={ React.Children.toArray(state.children) } labels={state.labels}>
+			<TabPanelsAndLabels id={ state.id + "PanelsAndLabels" } items={ React.Children.toArray(state.children) } labels={state.labels} isRoot={true}>
 			</TabPanelsAndLabels>
 			<TabChangeListener id="TabChangeListener" />
 		</div>

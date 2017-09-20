@@ -11,8 +11,10 @@ const toOptions = R.curry(( state, option, index ) => {
            </option>;
 });
 
-const InputSelect = (state) => <select className={ `${ getClassName(state) } ${ selectList }` }  onChange={state.handleEvent} value={ state.value }>
+const InputSelect = (state) => {
+	return (<select className={ `${ getClassName(state) } ${ selectList }` }  onChange={state.handleEvent} value={ state.value }>
 		{ state.items ? state.items.map(toOptions(state)) : null }
-	</select>
+	</select>);
+}
 
 export default readAndWrite(InputSelect, "InputSelect")

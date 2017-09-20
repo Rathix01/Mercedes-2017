@@ -1,6 +1,7 @@
 import React from 'react';
 import readWrite from '../../../components/read-and-write-state';
 import VisibilityContainer from '../../visibility-container';
+import DynamicFormAdminInstanceFeedback from './dynamic-form-admin-instance-feedback';
 import { nextPrevBtns, center, nextBtn, prevBtn, pageNumber } from '../styles';
 
 const dynamicFormAdminNavButtons = (state) => {
@@ -13,6 +14,7 @@ const dynamicFormAdminNavButtons = (state) => {
 					<VisibilityContainer id="SaveInstanceButtonVisibility">
 						<button onClick={state.handleEvent} className={nextBtn} id='save-instance'>Save</button>
 					</VisibilityContainer>
+					<DynamicFormAdminInstanceFeedback id="DynamicFormAdminInstanceFeedback" />
 				</div>
 			</div>
 	);

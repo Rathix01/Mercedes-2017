@@ -5,14 +5,14 @@ import VisibilityContainer from '../../visibility-container';
 import DynamicFormAdminOrgColors from './dynamic-form-admin-organizations-colors';
 import DynamicFormAdminOrgFormsList from './dynamic-form-admin-organizations-forms-list';
 import Tabs from '../../tabs';
-import { adminContainer, orgAndForm, inputArea, inputAreaSection, tabArea } from '../styles';
+import { adminContainer, orgAndForm, inputArea, pageTitle, tabArea } from '../styles';
 
 const dynamicFormAdminOrganizations = (state) => {
 	return <VisibilityContainer id="DynamicFormAdminOrganizationDisplayVisibility" defaultVisibility={true}> 
 		<div className={ adminContainer }>
 			<div className={orgAndForm}>
 				<div className={ inputArea }>
-					<div className={inputAreaSection}>{ state.displayName }</div>
+					<div className={pageTitle}>{ state.displayName } Online Forms Management</div>
 				</div>
 				<div className={ tabArea }>
 					<Tabs id='OrgTabs' labels={ ["Forms", "Colours"] }>

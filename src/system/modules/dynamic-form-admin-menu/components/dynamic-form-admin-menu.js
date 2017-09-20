@@ -11,7 +11,7 @@ const dynamicFormAdminMenu = (state) => {
 			<label>Home</label>
 			<div className={ eventHandlerElement } id="Org" onClick={state.handleEvent}></div>
 		</div>
-		<div className={menuItem}>
+		<div className={menuItem} style={{ display: "none" }}>
 			<div className={icon}>
 				<i className="fa fa-file-text-o"></i>&nbsp;
 			</div>
