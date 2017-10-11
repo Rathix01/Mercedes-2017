@@ -11,10 +11,11 @@ const toFormListener = (state) => state.component === "DynamicFormAdminActiveFor
 								&& state.id === "AdminSections";
 
 const toActiveForm = (state) => state.id === "ActiveFormListener";
-
 const toGenericToolsAction = (state) => state.component === "DynamicFormAdminGenericTools";
+const toOrgAndFormToolsAction = (state) => state.component === "DynamicFormAdminOrgAndFormTools";
 const toSaveFormAction = (state) => state.event.target.id === "save-form";
 const toNewFormAction = (state) => state.event.target.id === "new-form";
+const toDeleteFormAction = (state) => state.event.target.id === "delete-form";
 const toNewFormSaveAction = (state) => state.event && state.event.target && state.event.target.id === "new-form-save";
 const toNewFormNameAction = (state) => state.id === "NewFormName"
 const itemIsPresent = (form, item) => R.filter((i) => i.uniqueId === item.uniqueId, form.items).length !== 0;
@@ -38,10 +39,13 @@ const prepareFormForSave = (form, formDefinition, orgAndForm, saveEvent) => {
 	return ({ data, orgAndForm });
 }
 const toNewFormDefinition = (formName, orgAndForm, event) => ({ formName, orgAndForm, event })
+const prepareForDelete = (orgAndForm, deleteEvent) => ({ orgAndForm });
 
 const genericToolsAction = Actions.filter(toGenericToolsAction);
+const orgAndFormToolsAction = Actions.filter(toOrgAndFormToolsAction).log('?');
 const formAction = Actions.filter(toFormListener).toProperty();
 const saveFormAction = genericToolsAction.filter(toSaveFormAction);
+const deleteFormAction = orgAndFormToolsAction.filter(toDeleteFormAction);
 const newFormAction = genericToolsAction.filter(toNewFormAction);
 const newFormNameAction = Actions.filter(toNewFormNameAction);
 const newFormSaveAction = Actions.filter(toNewFormSaveAction);
@@ -56,11 +60,24 @@ const newForm = Bacon.when([ newFormNameAction.toProperty(),
 							 orgAndForm.toProperty(),
 							 newFormSaveAction.toEventStream() ], toNewFormDefinition);
 
+const deleteForm = Bacon.when([ 
+							  orgAndForm.toProperty(),
+							  deleteFormAction.toEventStream() ], prepareForDelete);
+
+
 const formSaved = saveForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.orgAndForm.form}`)
 			.set(state.data);
 	return Bacon.fromPromise(p);
 });
+
+const formDeleted = deleteForm.flatMap((state) => {
+	const p = Firebase.db.ref(`/DeletedForms/${state.orgAndForm.org}/${state.orgAndForm.form}`)
+			.set(state.orgAndForm.form);
+	return Bacon.fromPromise(p);
+});
+
+formDeleted.log('D');
 
 const formCreated = newForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.formName.event.target.value}`).set([{
@@ -124,5 +141,5 @@ const formCreated = newForm.flatMap((state) => {
 });
 
 module.exports = {
-	formSaved, formCreated, saveForm, newForm
+	formSaved, formCreated, saveForm, newForm, deleteForm, formDeleted
 }

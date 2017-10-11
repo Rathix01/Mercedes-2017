@@ -6,6 +6,7 @@ import { listItem } from '../styles';
 const renderChild = (state, component) => {
     return React.cloneElement(component, { id: `${state.id}ToggleList${state.index}`, 
     									   key: `${state.id}ToggleList${state.index}`,
+    									   version: (state.version + 1),
     									   ...state });
 }
 

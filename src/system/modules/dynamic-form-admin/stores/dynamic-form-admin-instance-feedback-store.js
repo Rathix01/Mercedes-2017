@@ -6,10 +6,6 @@ import Actions from '../../../../actions/actions';
 import { toTimeline } from '../../../stores/animation-store';
 import { saveData, dataSaved, formSaved } from './dynamic-form-admin-instance-store';
 
-saveData.log('1')
-dataSaved.log('2')
-formSaved.log('3')
-
 
 const toAnimateSaving = R.curry((key, state) => {
 	return ({

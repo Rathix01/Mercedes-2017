@@ -13,7 +13,6 @@ const toOrgAndFormUpdates = (state) => state.id === "AdminOrgAndForm" && state.c
 const isPageUp = (state) => state.event.target.id === "next";
 const isPageDown = (state) => state.event.target.id === "back";
 const toMax = (next, page) => {
-	console.log(next)
 	const pageNumbers = R.map((i) => i.page, next.data[next.orgAndForm.org][next.orgAndForm.form]);
 	const maxPage = R.reduce(R.max, -Infinity, pageNumbers);
 	return page > maxPage ? maxPage : page;
@@ -35,7 +34,6 @@ const pageDown = navUpdates.filter(isPageDown).map({ change:-1 }).toEventStream(
 
 const pageChange = pageUp.merge(pageDown);
 const pageUpdate = Bacon.when([formData.toProperty(), orgAndFormUpdate.toProperty(), pageChange.toEventStream()], toNextPage);
-							  //[formData.toProperty(), orgAndFormUpdate.toProperty(), newPage.toEventStream()], toNewPage)
 
 const page = pageUpdate.scan(1, changePage);
 

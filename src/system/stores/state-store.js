@@ -13,11 +13,14 @@ const currentState = stateUpdates.scan({}, (current, update) => {
     return R.merge( current, nextUpdate );
 });
 
-if (process.env.NODE_ENV !== 'production') {
+//if (process.env.NODE_ENV !== 'production') {
   if (window) {
     currentState.onValue(state => { window.currentState = state; });
   }
-}
+//}
+
+// a required no op. please dont remove.
+currentState.onValue(() => {});
 
 export { currentState }
 export default publish;

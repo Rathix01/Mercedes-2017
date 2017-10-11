@@ -9,6 +9,9 @@ const toValue = R.curry((key, state) => {
 	return ({ value: state[key], targetID: state.uniqueId })
 });
 
+const toOptions = (state) => ({ value: R.map((i) => i.text, state.itemState.items || []).join(",")  });
+const toValidations = (state) => ({ value: (R.keys(state.validations) || []) .join(",") })
+
 const itemToEditAction = Actions.filter(toItemToEdit).toProperty();
 
 itemToEditAction.onValue(publish("DynamicFormAdminEditForm"));
@@ -17,10 +20,13 @@ itemToEditAction.map(toValue("text")).onValue(publish("ComponentText"));
 itemToEditAction.map(toValue("title")).onValue(publish("ComponentTitle"));
 itemToEditAction.map(toValue("page")).onValue(publish("ComponentPage"));
 itemToEditAction.map(toValue("inputType")).onValue(publish("ComponentInputType"));
+itemToEditAction.map(toOptions).onValue(publish("ComponentOptions"));
+itemToEditAction.map(toValidations).onValue(publish("ValidationOptions"));
 
 itemToEditAction.map({ display: true }).onValue(publish("ItemToEditVisibility"));
-
 itemToEditAction.map({ tab: "Edit" }).onValue(publish("TabChangeListener"))
+
+itemToEditAction.map(R.prop("validations"));
 
 module.exports = {
 	itemToEdit: itemToEditAction

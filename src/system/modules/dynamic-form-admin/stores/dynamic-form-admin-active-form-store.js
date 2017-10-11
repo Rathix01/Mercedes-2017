@@ -22,6 +22,7 @@ import InputCheckboxList from '../../input-checkbox-list';
 import InputTextArea from '../../input-textarea';
 import InputDatePicker from '../../input-date-picker';
 
+const toFormMode = (state) => state.id === "FormMode";
 const toForceRender = (state) => state.id === "ForceFormRender" && state.componentEvent === "component-update";
 const toOrgAndFormUpdates = (state) => state.id === "AdminOrgAndForm" && state.componentEvent === "component-update";
 const toNextForm = (formData, keys) => {
@@ -95,9 +96,15 @@ const getComponent = (key) => {
 const toFormData = (state) => ({ items: R.map(getComponents, R.values(state.items)) });
 const toNewQuestion	= (form, update) => ({ form: { items: R.concat(form.items, update), page: update.page }, update:update  });
 const toNextFormPage = (state) => ({ page: state.page, items: state.nextForm.items, nextForm: state.nextForm.isNextForm || false });
-const filterToPage = (state) => ({ items: R.filter((i) => {
-	return R.identical(parseInt(i.page), parseInt(state.page) || 1)
-}, state.items) });
+
+const filterToValueItems = (state) => R.filter((i) => i.itemState.value !== "", state.activeForm.items)
+const getMaxPageWithValue = (state) => R.reduce((prev, next) => R.max(prev, next.page), 1, filterToValueItems(state));
+const filterToPage = (form, page, state) => {
+	const minPage = getMaxPageWithValue(state);
+	return ({ ...state, activeForm: { items: R.filter((i) => {
+		return form.mode !== "Publish" ? true : parseInt(i.page) <= (parseInt(page.page)) || parseInt(i.page) <= minPage;
+	}, state.activeForm.items) }});
+}
 
 const toFieldsForRender = (activeForm, orgAndForm, data) => ({activeForm, orgAndForm, data});
 const getOrgData = (state) => state.data[state.orgAndForm.org];
@@ -120,15 +127,17 @@ const nextFormPage = Bacon.combineTemplate({page, nextForm}).map(toNextFormPage)
 const activeForm = nextForm.toEventStream();
 const newQuestionForPage = Bacon.when([ page.toProperty(), newQuestion.toEventStream() ], toNewQuestionForPage);
 
+const sortPages = (state) => ({ ...state, items: R.sort((a, b) => a.page - b.page, state.items) });
+const sortItems = (state) => ({ ...state, items: R.sort((a, b) => parseInt(a.page.toString() + a.uniqueId.toString()) - parseInt(b.page.toString() + b.uniqueId.toString()), state.items) });
+
 const pageToPublish = Bacon.when([nextFormPage.toProperty(), singleItemUpdate.toEventStream()], toFormWithUpdate,
 		   [nextFormPage.toProperty(), singleItemDelete.toEventStream()], toFormWithDelete,
 		   [nextFormPage.toProperty(), newQuestionForPage.toEventStream()], toNewQuestion,
 		   [nextFormPage.toEventStream()], (form) => ({ update: { nextPage: true }, form }))
-.log('---')
 			.scan({}, toNextFormAndPage)
 			.skip(1)
-			.map(filterToPage)
-			.toProperty();
+			.map(sortPages)
+			.map(sortItems)
 
 
 const adminSections = pageToPublish.map(includeComponents).map(toItems);
@@ -145,12 +154,20 @@ const toValue = (values, page) => {
 	return toItemValue(values, page)[0] !== undefined ? toItemValue(values, page)[0].value  : "";
 }
 const toPageWithValues = (values, page) => R.merge(page, { activeForm: { items: R.map((i) => ({ ...i, itemState: { ...i.itemState, value: toValue(values, i) } }), page.activeForm.items) } });
+
 const pageAndValues = Bacon.when([ values.toProperty({}), formToRender.toEventStream() ], toPageWithValues);
 
-pageAndValues.map(includeOrgSettings).onValue(publish("AdminSections"));
+const formMode = Actions.filter(toFormMode);
+const formModePage = Bacon.when([ formMode.toProperty(), 
+								  pageToPublish.toProperty(), 
+								  pageAndValues.toEventStream() ], filterToPage);
+
+const allForm = formModePage.map(includeOrgSettings)
+
+allForm.onValue(publish("AdminSections"));
+
 activeForm.onValue(publish("ActiveFormListener"));
 nextForm.onValue(publish("NextFormListener"));
-
 
 module.exports = {
 	activeForm, nextForm, adminSections

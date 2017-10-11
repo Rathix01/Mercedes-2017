@@ -1,6 +1,6 @@
 import React from 'react';
 import moduleStatepublisher from '../../../components/module-state-publisher';
-import PositionAwareList from '../../position-aware-list';
+import PositionAwareList from '../../list';
 import DynamicFormAdminTools from '../../dynamic-form-admin-tools';
 import DynamicFormAdminSection from './dynamic-form-admin-section';
 import VisibilityContainer from '../../visibility-container';

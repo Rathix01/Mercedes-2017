@@ -51,9 +51,10 @@ const styles = StyleSheet.create({
     color: Variables.colors.white,
     padding: 10,
     maxWidth: 265,
-    boxSizing: "border-box",
     marginTop: 10,
     cursor: "pointer",
+    flexGrow: 1,
+    boxSizing: "border-box",
 
     ":hover": {
       background: Variables.colors.darkBlue,
@@ -62,8 +63,14 @@ const styles = StyleSheet.create({
       background: "#193048",
     }
   },
+  icon: {
+    marginRight: 5,
+  },
   btnArea: {
     padding: 2,
+    display: "flex",
+    flexDirection: "row",
+    maxWidth: 265,
   },
   positiveNotification: {
     background: Variables.colors.green,
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 10,
     maxWidth: 245,
     margin: "10px 0px 5px",
-    boxSizing: "boreder-box",
+    boxSizing: "border-box",
   },
   saving: {
     background: Variables.colors.darkGray,
@@ -79,7 +86,7 @@ const styles = StyleSheet.create({
     padding: 10,
     maxWidth: 245,
     margin: "10px 0px 5px",
-    boxSizing: "boreder-box",
+    boxSizing: "border-box",
   }
 });
 
@@ -90,6 +97,7 @@ module.exports = {
   inputArea: css(styles.inputArea),
   createForm: css(styles.createForm),
   newForm: css(styles.newForm),
+  icon: css(styles.icon),
   btnArea: css(styles.btnArea),
   positiveNotification: css(styles.positiveNotification),
   saving: css(styles.saving),

@@ -6,5 +6,5 @@ import Actions from '../../../../actions/actions';
 const toDemoLightboxEvents = (state) => state.component === "LightboxDemo";
 const toDisplayTrue = (state) => ({ display: true });
 
-const demoTextEvents = Actions.filter(toDemoLightboxEvents).log('?')
+const demoTextEvents = Actions.filter(toDemoLightboxEvents)
 demoTextEvents.map(toDisplayTrue).onValue(publish("DemoLightbox"))

@@ -5,11 +5,14 @@ import DynamicFormAdminInstanceFeedback from './dynamic-form-admin-instance-feed
 import { nextPrevBtns, center, nextBtn, prevBtn, pageNumber } from '../styles';
 
 const dynamicFormAdminNavButtons = (state) => {
+	console.log(state);
 	return (
 			<div className={nextPrevBtns}>
 				<div className={center}>
 					<div className={pageNumber}>{state.page || 1}</div>
-					<button onClick={state.handleEvent} className={prevBtn} id='back'>Back</button>
+					<VisibilityContainer id="BackButtonVisibility" defaultVisibility={true}>
+						<button onClick={state.handleEvent} className={prevBtn} id='back'>Back</button>
+					</VisibilityContainer>
 					<button onClick={state.handleEvent} className={nextBtn} id='next'>Next</button>
 					<VisibilityContainer id="SaveInstanceButtonVisibility">
 						<button onClick={state.handleEvent} className={nextBtn} id='save-instance'>Save</button>

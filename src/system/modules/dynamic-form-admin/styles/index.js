@@ -3,7 +3,7 @@ import { BackgroundColorsStyle, Variables } from '../../../styles/';
 
 const styles = StyleSheet.create({
   section: {
-    maxWidth: "1200px",
+    //maxWidth: "1200px",
     margin: "0px auto",
     padding: '0px',
     position: "relative",
@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       width: "100%",
       position:"absolute",
-      height: "100%",
       marginBottom: 60,
   },
   formColumn: {
       flexGrow: 3,
-      marginLeft: 40,
       position:"relative",
-      height: "100%",
+      marginBottom: 80,
+      marginTop: -40,
   },
   toolsColumn: {
       flexGrow: 1,
@@ -63,11 +62,13 @@ const styles = StyleSheet.create({
   saveFormBody: {
     marginTop: 20,
   },
-    nextPrevBtns: {
+  nextPrevBtns: {
     position: "fixed",
     bottom: -1,
     left: 0,
     width: '100%',
+    backgroundColor: 'rgba(200,200,200, 0.6)',
+    borderTop: `solid 1px ${ Variables.colors.lightGray }`,
   },
   center:{
     width: "100%",
@@ -75,8 +76,6 @@ const styles = StyleSheet.create({
     margin: "0px auto",
     display: "flex",
     justifyContent: "flex-end",
-    backgroundColor: 'rgba(200,200,200, 0.6)',
-    border: `solid 1px ${ Variables.colors.gray }`,
     position: 'relative',
   },
   btn: {

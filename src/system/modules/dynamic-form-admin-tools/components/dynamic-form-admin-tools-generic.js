@@ -7,7 +7,7 @@ import { genericToolsContainer, fixedContainer } from '../styles';
 import VisibilityContainer from '../../visibility-container';
 import AnimationContainer from '../../animation-container';
 import Tabs from '../../tabs';
-import { inputArea, createForm, orgAndForm, newForm, btnArea, positiveNotification, saving } from '../styles';
+import { inputArea, createForm, orgAndForm, newForm, icon, btnArea, positiveNotification, saving } from '../styles';
 
 const dynamicFormAdminGenericTools = (state) => {
 	return (
@@ -20,31 +20,46 @@ const dynamicFormAdminGenericTools = (state) => {
 					</VisibilityContainer>
 					<DynamicFormAdminFormValues id="DynamicFormAdminFormValues" />
 				</Tabs>
+				
 				<div className={ btnArea }>
 					<div onClick={ state.handleEvent } id="new-page" className={newForm}>
-						<i className="fa fa-plus-circle"></i> New Page
+						<i className={ `${icon} fa fa-plus-circle` }></i> Page
 					</div>
 					<div onClick={ state.handleEvent } id="new-question" className={newForm}>
-						<i className="fa fa-plus-circle"></i> New Item
+						<i className={ `${icon} fa fa-plus-circle` }></i> Item
 					</div>
 					<div onClick={ state.handleEvent } id="save-form" className={newForm}>
-						<i className="fa fa-arrow-circle-up"></i> Save Form
+						<i className={ `${icon} fa fa-cloud-upload` }></i> Save
 					</div>
-					<VisibilityContainer id="SavingNotificationVisibility" defaultVisibility={false}>
-						<AnimationContainer id="SavingNotificationAnimation">
-							<div className={saving}>
-								<i className="fa fa-arrow-circle-up"></i> Saving
-							</div>
-						</AnimationContainer>
-					</VisibilityContainer>
-					<VisibilityContainer id="SavedNotificationVisibility" defaultVisibility={false}>
-						<AnimationContainer id="SavedNotificationAnimation">
-							<div className={positiveNotification}>
-								<i className="fa fa-check-circle"></i> Save Successful
-							</div>
-						</AnimationContainer>
-					</VisibilityContainer>
 				</div>
+				<VisibilityContainer id="SavingNotificationVisibility" defaultVisibility={false}>
+					<AnimationContainer id="SavingNotificationAnimation">
+						<div className={saving}>
+							<i className="fa fa-arrow-circle-up"></i> Saving
+						</div>
+					</AnimationContainer>
+				</VisibilityContainer>
+				<VisibilityContainer id="DeletingNotificationVisibility" defaultVisibility={false}>
+					<AnimationContainer id="DeletingNotificationAnimation">
+						<div className={saving}>
+							<i className="fa fa-arrow-circle-up"></i> Deleting
+						</div>
+					</AnimationContainer>
+				</VisibilityContainer>
+				<VisibilityContainer id="SavedNotificationVisibility" defaultVisibility={false}>
+					<AnimationContainer id="SavedNotificationAnimation">
+						<div className={positiveNotification}>
+							<i className="fa fa-check-circle"></i> Save Successful
+						</div>
+					</AnimationContainer>
+				</VisibilityContainer>
+				<VisibilityContainer id="DeletedNotificationVisibility" defaultVisibility={false}>
+					<AnimationContainer id="DeletedNotificationAnimation">
+						<div className={positiveNotification}>
+							<i className="fa fa-check-circle"></i> Delete Successful
+						</div>
+					</AnimationContainer>
+				</VisibilityContainer>
 			</div>
 		</div>
 	);

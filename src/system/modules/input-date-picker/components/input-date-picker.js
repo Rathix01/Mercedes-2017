@@ -1,29 +1,19 @@
 import React from 'react';
-import readAndWrite from '../../../components/read-and-write-state';
+import moduleStatePublisher from '../../../components/module-state-publisher';
+import StateListener from '../../../components/state-listener';
+import InputText from '../../input-text';
 import CalendarContainer from './input-calendar-container';
 import { getClassName } from '../../../stores/component-helper-store';
 import { container, field } from '../styles';
 
 const InputDatePicker = (state) => {
 	return <div className={container}>
-		<input type='text' className={field} placeholder='DD' 	onChange={state.handleEvent}  />
-		<input type='text' className={field} placeholder='MM' 	onChange={state.handleEvent}  />
-		<input type='text' className={field} placeholder='YYYY' onChange={state.handleEvent}  />
+		<InputText id={ `${state.id}InternalValueDay` } placeholder="DD" className={field} rootId={state.id} />
+		<InputText id={ `${state.id}InternalValueMonth` } placeholder="MM" className={field} rootId={state.id} />
+		<InputText id={ `${state.id}InternalValueYear` } placeholder="YYYY" className={field} rootId={state.id} />
+		<StateListener id={ `${state.id}Updates` } isQuestion={ true } label="Label" formInputType="InputDatePicker"  />
 	</div>
 }
 
-export default readAndWrite(InputDatePicker, "InputDatePicker");
+export default moduleStatePublisher(InputDatePicker, "InputDatePicker");
 
-
-
-// const InputDatePicker = (state) => {
-// 	return <div>
-// 		<input type='text' className={getClassName(state)} />
-// 		<div>
-// 			<i className='fa fa-calendar' onClick={state.handleEvent} />
-// 		</div>
-// 		<CalendarContainer id={ state.id + "Container" } rootId={ state.id } />
-// 	</div>
-// }
-
-// export default readAndWrite(InputDatePicker, "InputDatePicker");

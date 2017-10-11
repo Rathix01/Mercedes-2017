@@ -3,12 +3,12 @@ import R from 'ramda';
 import publish from '../../../stores/state-store';
 import { toTimeline } from '../../../stores/animation-store';
 import Updates from './validation-message-store';
-import { Back } from 'gsap';
+//import { Back } from 'gsap';
 
 const validIs = R.curry((shouldBe, state) => state.valid === shouldBe);
 const includeDisplay = (state) => R.merge(state, { display: (state.valid === false ? true : false) })
 const publishVisibility = (state) => publish(state.id + "Visibility", state);
-const toDisplayFalse = R.curry((state, trigger) => R.merge(state, { display: false }));
+const toDisplayFalse = (state) => R.merge(state, { display: false, id: state.tweenProps[0].targetId })
 const toUpdate = (update, trigger) => update;
 
 const toDisplayTweens = (state) => ({
@@ -17,8 +17,17 @@ const toDisplayTweens = (state) => ({
     fn: 'fromTo',
     label: 'display',
     target: state.id + "Animation",
-    from: { opacity: 0, y: 50 },
-    to: { opacity: 1, y: 0, ease: Back.easeOut }
+    from: { opacity: 0, scale: 0.98 },
+    to: { opacity: 0, scale: 0, ease: Linear.easeNone },
+    targetId: state.id, // not used in animation. Just passing ID back to stream.
+  }, {
+    time: 0.2,
+    fn: 'fromTo',
+    label: 'display',
+    target: state.id + "Animation",
+    from: { opacity: 0, scale: 0.98 },
+    to: { opacity: 1, scale: 1, ease: Back.easeOut, delay: 0.2 },
+    targetId: state.id, // not used in animation. Just passing ID back to stream.
   }]
 });
 
@@ -28,19 +37,21 @@ const toHideTweens = (state) => ({
     fn: 'fromTo',
     label: 'hide',
     target: state.id + "Animation",
-    from: { opacity: 1, y: 0 },
-    to: { opacity: 0, y: -50, ease: Back.easeIn }
+    from: { opacity: 1, scale: 1 },
+    to: { opacity: 0, scale: 0.98, ease: Back.easeIn },
+    targetId: state.id, // not used in animation. Just passing ID back to stream.
   }]
 });
 
-const setUpHideErrorUpdates	= (state) => {
-	Updates.filter(validIs(true))
-		   .map(toHideTweens)
-		   .flatMap(toTimeline)
-		   .map(toDisplayFalse(state))
-		   .delay(200)
-		   .map(publishVisibility)
-		   .onValue(() => Bacon.noMore);
+// TODO - Fix "hide all errors" bug here.
+const setUpHideErrorUpdates = (state) => {
+  Updates.filter(validIs(true))
+       .map(toHideTweens)
+       .flatMap(toTimeline)
+       .map(toDisplayFalse)
+       .toEventStream()
+       .delay(200)
+       .onValue(publishVisibility)
 }
 
 const displayErrorUpdates = Updates.filter(validIs(false));
@@ -48,5 +59,4 @@ const displayAnimation = displayErrorUpdates.map(toDisplayTweens).flatMap(toTime
 
 displayErrorUpdates.map(includeDisplay).onValue(publishVisibility);
 
-Bacon.when([ Updates.toProperty(), 
-			 displayAnimation.toEventStream() ], toUpdate).onValue(setUpHideErrorUpdates);
+Bacon.when([ Updates.toProperty(), displayAnimation.toEventStream() ], toUpdate).onValue(setUpHideErrorUpdates);

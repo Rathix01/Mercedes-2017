@@ -22,16 +22,18 @@ const toValuesForStamp = (stamp, data) => data.FormValues !== undefined ? data.F
 const toAllFormDetails = (orgAndForm, saveData) => ({ orgAndForm, saveData })
 
 const isChange = R.curry(( prev, item ) => {
-	const prevItem = R.filter((prevItem) => prevItem.inputId === item.inputId,  prev.prev || []);
+	const prevItem = R.filter((prevItem) => { prevItem !== undefined && 
+											  item !== undefined && 
+											  prevItem.inputId === item.inputId },  prev.prev || []);
 	return prevItem.length === 1 ? R.merge(item, { isChange: item.value !== prevItem[0].value } ) : item
 } );
 
 const isUpdate = (prev, next) => {
-	return R.map(isChange(prev), next.items)
+	return R.map(isChange(prev), next)
 }
 
 const toFieldUpdates = (prev, next) => {
-	return ({ prev: prev.next || [], next: isUpdate(prev, next) });
+	return ({ prev: prev.next || [], next: next });
 }
 
 const updateValues = R.curry(( prev, item ) => {
@@ -43,29 +45,32 @@ const updateFields = (values, updates) => {
 	return R.map(updateValues(values), updates.next)
 }
 
+const toSaveState = (template) => template.values === undefined 
+									? ({ stamp: template.stamp, items: template.update.items })
+									: mergeSaveState(template);  
+
+const mergeSaveState = (template) => ({ items: R.reduce((arr, v) => {
+	const updatedItem = R.filter((i) => i.inputId === v.inputId, template.update.items)[0];
+	return arr.concat((updatedItem !== undefined && updatedItem.updated === true) ? R.omit("updated", updatedItem) : v);
+}, [], template.values), stamp: template.stamp });
+
 const saveEvent = Actions.filter(toNavButtonEvent).filter(toSaveButtonEvent);
 const updateEvent = Actions.filter(toFormValueListenerActions);
 const urlStamp = Bacon.once(decode(getValueForKey('stamp'))).filter(urlHasValueFor("stamp")).toProperty();
 const orgAndFormUpdate = Actions.filter(toOrgAndFormUpdates);
 
-
-
 const values = Bacon.when([ urlStamp.toProperty(), Firebase.data.toEventStream() ], toValuesForStamp)
-
-
-const nextUpdates = updateEvent.scan([], toFieldUpdates).toEventStream();
-//values.log('existing')
+const nextUpdates = updateEvent.merge(values).scan([], toFieldUpdates).map(R.prop("next"));
 nextUpdates.onValue(() => {});
 
-const updatedFields = Bacon.when([ values.toProperty(), nextUpdates ], updateFields)//.log('-->')
+const saveData = Bacon.when([ nextUpdates.toProperty(), 
+			 				  urlStamp.toProperty(),
+			 				  values.toProperty(),
+			 				  saveEvent.toEventStream() ], (update, stamp, values) => ({ update, stamp, values })).toEventStream();
 
-const saveData = Bacon.when([ updatedFields.toProperty(), 
-			 		urlStamp.toProperty(), 
-			 		saveEvent.toEventStream() ], (update, stamp) => ({ update, stamp }));
-
-const dataSaved = saveData.flatMap((state) => {
-	console.log('update', state)
-	const p = Firebase.db.ref(`/FormValues/${state.stamp}`).set(state.update);
+const dataSaved = saveData.map(toSaveState).flatMap((state) => {
+	console.log('saving...', state)
+	const p = Firebase.db.ref(`/FormValues/${state.stamp}`).set(state.items);
 	return Bacon.fromPromise(p);
 })
 
@@ -83,7 +88,6 @@ formSaved.onValue((state) => {
 	});
 	return Bacon.fromPromise(p);
 })
-
 
 module.exports = {
 	values, saveData, dataSaved, formSaved

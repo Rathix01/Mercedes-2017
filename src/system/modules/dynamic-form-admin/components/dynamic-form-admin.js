@@ -28,6 +28,7 @@ const dynamicFormAdmin = (state) => {
 			<DynamicFormAdminFormValuesListener id="AdminOrgAndForm" />
 			<NavButtons id="AdminFormDisplayValues" />
 			<StateListener id="ForceFormRender" />
+			<StateListener id="FormMode" />
 		</div>
 	);
 };

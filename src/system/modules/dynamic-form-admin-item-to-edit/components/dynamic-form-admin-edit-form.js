@@ -3,6 +3,7 @@ import readWrite from '../../../components/read-and-write-state';
 import DisplayField from '../../display-field';
 import InputSelectList from '../../input-select-list';
 import InputText from '../../input-text';
+import Text from '../../text';
 import { row, btnRow, newForm } from '../styles';
 
 const dynamicFormAdminEditForm = (state) => {
@@ -44,9 +45,15 @@ const dynamicFormAdminEditForm = (state) => {
 				</div>
 			</div>
 			<div className={row}>
+				<label>Validation</label>
+				<div> 
+					<InputText id="ValidationOptions" />  
+				</div>
+			</div>
+			<div className={row}>
 				<label>Page</label>
 				<div> 
-					<InputText id="ComponentPage" />  
+					<Text id="ComponentPage" />  
 				</div>
 			</div>
 			<div className={btnRow}>

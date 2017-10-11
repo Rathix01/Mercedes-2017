@@ -10,6 +10,8 @@ const renderChild = (state, c) => {
     									   key: `${state.id}Question${state.index}`,
     									   uniqueId: state.uniqueId,
     									   isQuestion: true,
+    									   itemValue: state.itemState.value,
+                                           validations: state.validations,
     									   ...state.itemState });
 }
 

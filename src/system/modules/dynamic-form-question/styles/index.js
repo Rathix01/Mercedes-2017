@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     maxWidth: 1200,
-    margin: "10px auto",
+    margin: "3px auto",
     padding: "20px 20xp 0px 20px",
     boxSizing: "border-box",
     fontFamily: "Raleway",
@@ -16,11 +16,10 @@ const styles = StyleSheet.create({
     backgroundColor: Variables.colors.lightGray,
   },
   label: {
-    flexGrow: 1,
     padding: "10px 20px",
+    width: "30%",
   },
   input: {
-    flexGrow: 2,
     display: 'flex',
     justifyContent: "flex-end",
     padding: "5px 20px",

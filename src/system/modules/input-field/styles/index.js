@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     padding: "10px 20px",
   },
   inputAndValidation: {
-  	flex: 1,
-    flexGrow: 1,
+  	flex: 1.5,
+    flexGrow: 1.5,
   },
   input: {
   	width: "100%",

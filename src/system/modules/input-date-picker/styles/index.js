@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
   },
   field: {
   	width: 70,
+    maxWidth: 70,
+    minWidth: 70,
   	marginRight: 3,
   	padding: 5,
     fontFamily: 'Raleway',

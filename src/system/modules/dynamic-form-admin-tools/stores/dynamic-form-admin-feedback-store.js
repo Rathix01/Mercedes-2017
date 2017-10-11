@@ -2,7 +2,7 @@ import Bacon from 'baconjs';
 import R from 'ramda';
 import publish from '../../../stores/state-store';
 import Actions from '../../../../actions/actions';
-import { formSaved, formCreated, saveForm, newForm } from './dynamic-form-admin-save-form-store';
+import { formSaved, formCreated, saveForm, newForm, deleteForm, formDeleted } from './dynamic-form-admin-save-form-store';
 import { toTimeline } from '../../../stores/animation-store';
 
 const toAnimateSaving = R.curry((key, state) => {
@@ -57,17 +57,21 @@ formSaved.log('Form was saved...')
 //show saving, then hide when saved.
 saveForm.map({ display: true }).onValue(publish("SavingNotificationVisibility"));
 const savingNotificationAnimation = saveForm.map(toAnimateSaving("SavingNotificationAnimation")).flatMap(toTimeline);
-
 const formSaveAndAnimated = Bacon.when([formSaved.toEventStream(), savingNotificationAnimation.toEventStream()], x => x).delay(600);
 formSaveAndAnimated.map({ display: false }).onValue(publish("SavingNotificationVisibility"))
-
-//show saved.
 formSaveAndAnimated.map({ display: true }).onValue(publish("SavedNotificationVisibility"))
-//animate showing s
 const savedNotificationAnimation = formSaveAndAnimated.map(toAnimateSaved("SavedNotificationAnimation")).flatMap(toTimeline)
-
-//hide saved.
 savedNotificationAnimation.map({ display: false }).onValue(publish("SavedNotificationVisibility"));
 
+//delete forms
+deleteForm.map({ display: true }).onValue(publish("DeletingNotificationVisibility"));
+const deletingNotificationAnimation = deleteForm.map(toAnimateSaving("DeletingNotificationAnimation")).flatMap(toTimeline);
+const formDeletedAndAnimated = Bacon.when([formDeleted.toEventStream(), deletingNotificationAnimation.toEventStream()], x => x).delay(600);
+formDeletedAndAnimated.map({ display: false }).onValue(publish("DeletingNotificationVisibility"))
+formDeletedAndAnimated.map({ display: true }).onValue(publish("DeletedNotificationVisibility"))
+const deletedNotificationAnimation = formDeletedAndAnimated.map(toAnimateSaved("DeletedNotificationAnimation")).flatMap(toTimeline)
+deletedNotificationAnimation.map({ display: false }).onValue(publish("DeletedNotificationVisibility"));
+
+// new form.
 formCreated.map({ display: false }).onValue(publish("NewFormVisibility"));
 formCreated.map({ display: true }).onValue(publish("OrgAndFormVisibility"));

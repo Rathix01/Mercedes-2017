@@ -1,6 +1,8 @@
 import Bacon from 'baconjs';
 import firebase from 'firebase';
 
+console.log('firebase')
+
 // DB Config. Probably shouldnt live here.
 const config = {
 	apiKey: "voloNZ",
@@ -15,6 +17,9 @@ const db = firebase.database();
 // A stream for the data (when loaded);
 const data = new Bacon.Bus();
 
-db.ref('/').on('value', (snapshot) => data.push(snapshot.val()));
+db.ref('/').on('value', (snapshot) => {
+	console.log('data loaded')
+	data.push(snapshot.val())
+});
 
 export default { data, db }

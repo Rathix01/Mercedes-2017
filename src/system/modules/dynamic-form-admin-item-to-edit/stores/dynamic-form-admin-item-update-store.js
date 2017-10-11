@@ -54,8 +54,6 @@ itemToEdit.onValue((item) => {
 	updateData.map(toCleanUpdate).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));
 });
 
-
-
 selectValue.onValue(publish("ComponentTypeSelect"));
 newTitle.onValue(publish("ComponentTitle"));
 newText.onValue(publish("ComponentText"));

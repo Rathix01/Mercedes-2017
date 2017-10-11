@@ -9,10 +9,10 @@ const toListItem = R.curry(( listState, listItemState, i) => {
       key={`list-item-${listItemState.index || i}`}
       index={listItemState.index || i}
       rootId={listState.id}
-      id={`${listState.id}Row${i}`}
+      id={`${listState.id}Row${listItemState.inputId}${i}`}
       className={listState.itemClass}
     >
-      {listState.children}
+      {listState.children} XYZ
     </ListItem>
 });
 

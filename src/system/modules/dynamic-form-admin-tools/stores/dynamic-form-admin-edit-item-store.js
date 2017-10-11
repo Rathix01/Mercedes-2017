@@ -10,13 +10,15 @@ const toEditItem = (form, action) => R.filter(toItemForAction(action), form.item
 const toDeleteItem = (state) => ({ delete: true, ...state });
 const toNonDeleteItem = (state) => ({ delete: false, ...state });
 
+// TODO - remove this once validations become standard.
+const toCleanItem = (state) => ({ ...state, validations: state.validations !== undefined ? state.validations : {} });
+
 const activeForm = Actions.filter(toFormListenerAction);
 const editAction = BasicControls.basicEdit.toEventStream();
 const deleteAction = BasicControls.basicDelete.toEventStream();
 const itemToEdit = Bacon.when([ activeForm.toProperty(), editAction ], toEditItem).map(R.head);
 const itemToDelete = Bacon.when([ activeForm.toProperty(), deleteAction ], toEditItem).map(R.head);
 
-
-itemToEdit.onValue(publish("ItemToEdit"));
+itemToEdit.map(toCleanItem).onValue(publish("ItemToEdit"));
 itemToDelete.map(toDeleteItem).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));
 itemToEdit.map(toNonDeleteItem).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));

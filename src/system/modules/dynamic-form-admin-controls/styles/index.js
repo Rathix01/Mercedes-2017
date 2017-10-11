@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
 
   basicControls: {
     position:"absolute",
-    top: "15px",
+    top: "30%",
     right: "5px",
     display: "flex",
     flexDirection: "row",

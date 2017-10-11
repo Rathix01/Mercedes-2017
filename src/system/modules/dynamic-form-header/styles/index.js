@@ -6,16 +6,22 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    maxWidth: 1200,
-    margin: "0px auto",
-    padding: "10px 20px",
+    margin: "40px auto 0px",
+    padding: "20px 20px",
     boxSizing: "border-box",
     fontFamily: "Raleway",
     backgroundColor: Variables.colors.blue,
+  },
+  formHeaderText: {
+    maxWidth: 1200,
+    width: "100%",
     color: Variables.colors.white,
+    display: 'block',
+    alignSelf: 'center',
   }
 });
 
 module.exports = {
-  formHeader: css(styles.formHeader)
+  formHeader: css(styles.formHeader),
+  formHeaderText: css(styles.formHeaderText)
 };
