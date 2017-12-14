@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     margin: "0px auto",
     padding: '0px',
     position: "relative",
-    overflow: "hidden",
     zIndex: "0",
     boxSizing: "border-box",
   },
@@ -62,47 +61,7 @@ const styles = StyleSheet.create({
   saveFormBody: {
     marginTop: 20,
   },
-  nextPrevBtns: {
-    position: "fixed",
-    bottom: -1,
-    left: 0,
-    width: '100%',
-    backgroundColor: 'rgba(200,200,200, 0.6)',
-    borderTop: `solid 1px ${ Variables.colors.lightGray }`,
-  },
-  center:{
-    width: "100%",
-    maxWidth: 1200,
-    margin: "0px auto",
-    display: "flex",
-    justifyContent: "flex-end",
-    position: 'relative',
-  },
-  btn: {
-    fontSize: 20,
-    fontFamily: 'Raleway',
-    padding: "5px 40px",
-  },
-  nextBtn:{
-    margin:"10px 5px",
-  },
-  prevBtn: {
-    margin:"10px 5px",
-  },
-  pageNumber: {
-    position: "absolute",
-    right: 440,
-    top: 15,
-    fontFamily: "Raleway",
-    background: Variables.colors.blue,
-    color: Variables.colors.white,
-    width: 30,
-    height: 30,
-    borderRadius: 30,
-    textAlign: "center",
-    paddingTop: 5,
-    boxSizing: "border-box",
-  },
+  
   positiveNotification: {
     background: Variables.colors.green,
     color: Variables.colors.white,
@@ -125,7 +84,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
     width: 200
-  }
+  },
+  
 });
 
 module.exports = {
@@ -136,12 +96,7 @@ module.exports = {
   adminHeader: css(styles.adminHeader),
   saveForm: css(styles.saveForm),
   saveFormHeader: css(styles.saveFormHeader),
-  saveFormBody: css(styles.saveFormBody),
-  nextPrevBtns: css(styles.nextPrevBtns),
-  center: css(styles.center),
-  nextBtn: css(styles.nextBtn, styles.btn),
-  prevBtn: css(styles.prevBtn, styles.btn),
-  pageNumber: css(styles.pageNumber),
+  saveFormBody: css(styles.saveFormBody), 
   positiveNotification: css(styles.positiveNotification),
   saving: css(styles.saving),
   fixedContainer: css(styles.fixedContainer),

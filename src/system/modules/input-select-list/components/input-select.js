@@ -6,7 +6,7 @@ import { selectList } from '../styles';
 
 const toOptions = R.curry(( state, option, index ) => {
     let keyValue = typeof(option) === 'string' ? option : option.value;
-    return <option key={ keyValue + index.toString() } value={typeof(option) === 'string' ? option : option.value }>
+    return <option key={ keyValue + index.toString() } value={typeof(option) === 'string' ? option : option.value } className={state.optionClass || ""}>
                   { typeof(option) === 'string' ? option : (option.text || option.value) }
            </option>;
 });

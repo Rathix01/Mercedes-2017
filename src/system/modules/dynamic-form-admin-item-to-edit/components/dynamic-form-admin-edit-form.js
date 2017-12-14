@@ -4,26 +4,29 @@ import DisplayField from '../../display-field';
 import InputSelectList from '../../input-select-list';
 import InputText from '../../input-text';
 import Text from '../../text';
-import { row, btnRow, newForm } from '../styles';
+import { row, idRow, btnRow, newForm } from '../styles';
 
-const dynamicFormAdminEditForm = (state) => {
-	return (
-		<div>
-			<br />
-			<div className={row}>
-				<label>ID</label>
-				<div> { `${ state.uniqueId || "" }` } </div>
-			</div>
-			<div className={row}>
-				<label>Component Type</label>
-				<div> 
-					<InputSelectList id="ComponentTypeSelect" items={ [ "", "header", "question", "text" ] } /> 
-				</div>
-			</div>
-			<div className={row}>
+import EditHeader from './dynamic-form-admin-edit-header';
+import EditPresentation from './dynamic-form-admin-edit-presentation';
+
+const getHeader = () => <EditHeader id="EditHeader" />;
+const getPresentation = () => <EditPresentation id="EditPresentation" />;
+
+const getDefault = () => {
+	return (<div>
+		<div className={row}>
 				<label>Input Type</label>
 				<div> 
-					<InputSelectList id="ComponentInputType" items={ [ "", "text", "select", "radio", "text area", "date", "checkbox" ] } /> 
+					<InputSelectList id="ComponentInputType" items={ [ "", 
+																	"button",
+																	"text", 
+																	"select", 
+																	"radio", 
+																	"text area", 
+																	"date", 
+																	"checkbox", 
+																	"auto-complete",
+																	"password-and-confirm" ] } /> 
 				</div>
 			</div>
 			<div className={row}>
@@ -50,6 +53,34 @@ const dynamicFormAdminEditForm = (state) => {
 					<InputText id="ValidationOptions" />  
 				</div>
 			</div>
+		</div>);
+}
+
+const getEditComponents = (state) => {
+	return {
+		'header': getHeader(),
+		'presentation': getPresentation(),
+		'question': getDefault(),
+		'text': getDefault(),
+		'list': getDefault(),
+	}[ state.componentType ]
+}
+
+const dynamicFormAdminEditForm = (state) => {
+	return (
+		<div>
+			<br />
+			<div className={idRow}>
+				<label>ID</label>
+				<div> { `${ state.uniqueId || "" }` } </div>
+			</div>
+			<div className={row}>
+				<label>Component Type</label>
+				<div> 
+					<InputSelectList id="ComponentTypeSelect" items={ [ "", "header", "question", "text", "presentation", "list" ] } /> 
+				</div>
+			</div>
+			{ getEditComponents(state) }
 			<div className={row}>
 				<label>Page</label>
 				<div> 

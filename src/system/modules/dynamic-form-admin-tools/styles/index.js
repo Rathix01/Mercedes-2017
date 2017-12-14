@@ -87,7 +87,52 @@ const styles = StyleSheet.create({
     maxWidth: 245,
     margin: "10px 0px 5px",
     boxSizing: "border-box",
-  }
+  },
+  nextPrevBtns: {
+    width: "100%",
+    maxWidth: 250
+  },
+  center:{
+    width: "100%",
+    margin: "5px 2px",
+    display: "flex",
+    position: 'relative',
+  },
+  btn: {
+    fontSize: 18,
+    fontFamily: 'Raleway',
+    padding: "5px 40px",
+    background: Variables.colors.blue,
+    color: Variables.colors.white,
+    border: "none",
+    outline: "none",
+    flex: 1,
+    flexGrow: 1,
+
+    ":hover": {
+      background: Variables.colors.darkBlue,
+    }
+  },
+  nextBtn:{
+    
+  },
+  prevBtn: {
+    
+  },
+  pageNumber: {
+    fontFamily: "Raleway",
+    background: Variables.colors.blue,
+    color: Variables.colors.white,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    textAlign: "center",
+    paddingTop: 5,
+    boxSizing: "border-box",
+    flex: 1,
+    flexGrow: 1,
+    marginLeft: 15,
+  },
 });
 
 module.exports = {
@@ -101,4 +146,9 @@ module.exports = {
   btnArea: css(styles.btnArea),
   positiveNotification: css(styles.positiveNotification),
   saving: css(styles.saving),
+  nextPrevBtns: css(styles.nextPrevBtns),
+  center: css(styles.center),
+  nextBtn: css(styles.nextBtn, styles.btn),
+  prevBtn: css(styles.prevBtn, styles.btn),
+  pageNumber: css(styles.pageNumber),
 }

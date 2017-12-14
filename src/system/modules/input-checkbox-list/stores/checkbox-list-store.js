@@ -57,3 +57,4 @@ checkedItems.onValue(checkItem);
 const checkedStates = radioItemEvents.merge(checkedItems).scan({}, toCheckedState);
 Bacon.when([checkedStates.toProperty(), radioItemEvents.toEventStream()], toChecked).onValue(checkItem);
 Bacon.when([checkedStates.toProperty(), radioItemEvents], toSaveState).onValue(publishExternal)
+

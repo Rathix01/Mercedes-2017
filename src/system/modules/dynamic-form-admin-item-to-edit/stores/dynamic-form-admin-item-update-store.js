@@ -6,16 +6,19 @@ import { itemToEdit } from './dynamic-form-admin-item-to-edit-store';
 
 const toItemEdit = (state) => state.component === "DynamicFormAdminEditForm"
 const toItemByID = R.curry((id, state) => state.id === id);
+const isEditField = (state) => state.isEditField === true;
+
 const toInputOptions = (state) => state.value ? R.map((i) => ({ text: i, value: i }), state.value.split(",")) : [];
 const toTypeSelectData = (state) => ({ type: state.event.target.value, targetID: state.targetID });
-const toUpdateData = (type, title, text, inputType, inputOptions, page, item, edit) => ({ nextUpdate: { type:type.type, 
+const toUpdateData = (type, title, text, inputType, inputOptions, page, item, editItems, edit) => ({ nextUpdate: { type:type.type, 
 																   componentType: type.type,
 																   title:title.value, 
 																   text: text.value,
 																   page: parseInt(page.value) || 1,
 																   inputType: inputType.value,
 																   itemState: { items: toInputOptions(inputOptions) },
-																   targetID: item.uniqueId }});
+																   targetID: item.uniqueId,
+																   editState: R.omit("targetID", editItems) }});
 
 const toValue = (state) => ({ value: state.event.target.value });
 const toTextValue = (state) => ({ value: state.event.target.value, targetID: state.targetID });
@@ -38,6 +41,8 @@ const pageNumber = Actions.filter(toItemByID("ComponentPage")).map(toTextValue).
 const inputType = Actions.filter(toItemByID("ComponentInputType")).map(toTextValue);
 const inputOptions = Actions.filter(toItemByID("ComponentOptions")).map(toTextValue);
 
+//todo, scan items goes here
+const editFieldActions = Actions.filter(isEditField).map(toTextValue);
 const selectValue = itemTypeSelectAction.map(toValue);
 const selectData = itemTypeSelectAction.map(toTypeSelectData);
 
@@ -49,6 +54,7 @@ itemToEdit.onValue((item) => {
 								inputOptions.toProperty({}),
 								pageNumber,
 								Bacon.once(item).toProperty(),
+								editFieldActions.toProperty({}),
 								editAction.toEventStream() ], toUpdateData);
 
 	updateData.map(toCleanUpdate).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));

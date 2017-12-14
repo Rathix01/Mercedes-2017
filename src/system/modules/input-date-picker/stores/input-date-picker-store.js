@@ -38,8 +38,11 @@ const toYearFromUpdate = (state) => ({
 	placeholder: "YYYY",
 })
 
+const dateFieldHasValue = (state) => state.value !== undefined && state.value.length > 0;
+
 const dateFields = Actions.filter(isDateInput).filter(isMountEvent).scan({}, toDateFields);
-const dateUpdates = Actions.filter(isDateInput).filter(isUpdateEvent)
+const dateUpdates = Actions.filter(isDateInput).filter(isUpdateEvent);
+const dateFieldsWithValues = Actions.filter(isDateInput).filter(isMountEvent).filter(dateFieldHasValue)
 
 const dayUpdate = dateUpdates.map(toDayFromUpdate);
 const monthUpdate = dateUpdates.map(toMonthFromUpdate);
@@ -55,5 +58,5 @@ const dates = updates.scan({}, toDateFieldsByKey);
 const dateForKey = Bacon.when([ dates.toProperty(), updates.toEventStream() ], toDateForKey)
 const dateUpdate = Bacon.when([dateFields, dateForKey], toDateUpdate);
 
-dateUpdate.onValue(publishDate);
-updates.onValue(publishComponentValue);
+dateUpdate.merge(dateFieldsWithValues).onValue(publishDate);
+updates.merge(dateFieldsWithValues).onValue(publishComponentValue);

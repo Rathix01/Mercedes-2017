@@ -6,6 +6,7 @@ import Actions from '../../../../actions/actions';
 import publish from '../../../stores/state-store';
 import { orgAndForm } from './dynamic-form-admin-org-names-store';
 
+const mapIndexed = R.addIndex(R.map);
 const toFormListener = (state) => state.component === "DynamicFormAdminActiveFormUpdateListener" 
 								&& state.componentEvent === "component-update"
 								&& state.id === "AdminSections";
@@ -19,6 +20,7 @@ const toDeleteFormAction = (state) => state.event.target.id === "delete-form";
 const toNewFormSaveAction = (state) => state.event && state.event.target && state.event.target.id === "new-form-save";
 const toNewFormNameAction = (state) => state.id === "NewFormName"
 const itemIsPresent = (form, item) => R.filter((i) => i.uniqueId === item.uniqueId, form.items).length !== 0;
+const publishToNameInput = (state) => publish(state.id, { value: state.event.targetValue });
 const prepareFormForSave = (form, formDefinition, orgAndForm, saveEvent) => {
 
 	const all = R.concat(form.items, formDefinition.items);
@@ -33,16 +35,19 @@ const prepareFormForSave = (form, formDefinition, orgAndForm, saveEvent) => {
 	const nextData = R.reduce( (items, next) => {
 		const z = R.filter((i) => i.uniqueId === next.uniqueId, items)
 		return z.length > 0 ? items : R.concat(items, next);
-	}, [], nextSet );
+	}, [], nextSet);
 
 	const data = R.map(R.omit(["dataComponent", "itemInput"]), nextData);
 	return ({ data, orgAndForm });
 }
 const toNewFormDefinition = (formName, orgAndForm, event) => ({ formName, orgAndForm, event })
 const prepareForDelete = (orgAndForm, deleteEvent) => ({ orgAndForm });
+const addIndex = (state) => ({ ...state, data: mapIndexed((item, idx) => ({ ...item, index: (item.page * 1000) + idx }),  state.data)  })
 
 const genericToolsAction = Actions.filter(toGenericToolsAction);
-const orgAndFormToolsAction = Actions.filter(toOrgAndFormToolsAction).log('?');
+
+
+const orgAndFormToolsAction = Actions.filter(toOrgAndFormToolsAction);
 const formAction = Actions.filter(toFormListener).toProperty();
 const saveFormAction = genericToolsAction.filter(toSaveFormAction);
 const deleteFormAction = orgAndFormToolsAction.filter(toDeleteFormAction);
@@ -51,10 +56,12 @@ const newFormNameAction = Actions.filter(toNewFormNameAction);
 const newFormSaveAction = Actions.filter(toNewFormSaveAction);
 const formUpdate = Actions.filter(toActiveForm);
 
+newFormNameAction.onValue(publishToNameInput)
+
 const saveForm = Bacon.when([ formAction,
 							  formUpdate.toProperty(),
 							  orgAndForm.toProperty(),
-							  saveFormAction.toEventStream() ], prepareFormForSave);
+							  saveFormAction.toEventStream() ], prepareFormForSave).map(addIndex)//.log('save this ->')
 
 const newForm = Bacon.when([ newFormNameAction.toProperty(), 
 							 orgAndForm.toProperty(),
@@ -77,19 +84,18 @@ const formDeleted = deleteForm.flatMap((state) => {
 	return Bacon.fromPromise(p);
 });
 
-formDeleted.log('D');
-
 const formCreated = newForm.flatMap((state) => {
 	const p = Firebase.db.ref(`/FormDefinitions/${state.orgAndForm.org}/${state.formName.event.target.value}`).set([{
 			uniqueId: new Date().getTime() + 1,
 			sectionId: "Test" + new Date().getTime(),
 		  	itemState: { value: "example" },
-		  	title: "New Form",
+		  	title: "New Form - Page 1",
 		  	page: 1,
 		  	componentType: "header",
 		  	inputType: "",
 		  	type: "header",
-		  	text: "This is a header, you can customize the text for this component",
+		  	keywords: ["page1"],
+		  	text: "This is the header for page 1",
 		},
 		{
 			uniqueId: new Date().getTime() + 2,
@@ -100,6 +106,7 @@ const formCreated = newForm.flatMap((state) => {
 		  	componentType: "text",
 		  	inputType: "text",
 		  	type: "text",
+		  	keywords: ["page1"],
 		  	text: "This is a text component, it is for longer messages or instructions",
 		},
 		{
@@ -111,17 +118,19 @@ const formCreated = newForm.flatMap((state) => {
 		  	inputType: "text",
 		  	type: "question",
 		  	text: "A text field. Use for the collection of free text",
+		  	keywords: ["page1"],
 		  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 		},
 		{
 			uniqueId: new Date().getTime() + 3,
 			sectionId: "Test" + new Date().getTime(),
 		  	itemState: { value: "example" },
-		  	title: "New Form",
+		  	title: "New Form  - Page 2",
 		  	page: 2,
 		  	componentType: "header",
 		  	type: "header",
-		  	text: "This is a header, you can customize the text for this component",
+		  	keywords: ["page2"],
+		  	text: "This is the header for page 2",
 		},
 		{
 			uniqueId: new Date().getTime() + 4,
@@ -133,6 +142,7 @@ const formCreated = newForm.flatMap((state) => {
 		  	inputType: "select",
 		  	type: "question",
 		  	text: "A selection field. Use for the collection of free text",
+		  	keywords: ["page2"],
 		  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 		},
 	]);

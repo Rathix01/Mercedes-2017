@@ -6,7 +6,7 @@ import DynamicFormAdminOrgs from '../../dynamic-form-admin-organizations';
 import DynamicFormAdminSingleItemUpdateListener from './dynamic-form-admin-single-item-update-listener';
 import DynamicFormAdminUpdateListener from './dynamic-form-admin-update-listener'
 import DynamicFormAdminFormValuesListener from './dynamic-form-admin-form-values-update-listener';
-import NavButtons from './dynamic-form-admin-nav-buttons';
+import DynamicFormAdminRules from '../../dynamic-form-admin-rules';
 import VisibilityContainer from '../../visibility-container';
 import DynamicFormAdminFormAndTools from './dynamic-form-admin-form-and-tools';
 
@@ -26,9 +26,11 @@ const dynamicFormAdmin = (state) => {
 			<DynamicFormAdminSingleItemUpdateListener id="DynamicFormAdminSingleItemUpdateListener" />
 			<DynamicFormAdminUpdateListener id="AdminOrgAndForm" />
 			<DynamicFormAdminFormValuesListener id="AdminOrgAndForm" />
-			<NavButtons id="AdminFormDisplayValues" />
+			<DynamicFormAdminRules id="AdminRules" />
+			
 			<StateListener id="ForceFormRender" />
 			<StateListener id="FormMode" />
+			<StateListener id="SaveWithRules" />
 		</div>
 	);
 };

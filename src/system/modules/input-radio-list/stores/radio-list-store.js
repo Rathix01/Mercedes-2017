@@ -19,7 +19,7 @@ const checkItem = (state) => publish(state.id, { checked: true });
 const toMountEvents = (state) => state.event === "component-mount";
 const toInitItem = (state) => publish(state.id + "RadioListItem0", { checked: true } );
 
-const publishExternal = (state) => publish(`${state.list.id}Updates`, state.event);
+const publishExternal = (state) => publish(`${state.list.id}Updates`, ({ ...state.event, rules: state.list.rules, value: state.event.value }));
 
 const toTarget = (state) => R.filter((item) => { 
 	return item.value === state.value }, mapIndexed((i, idx) => ({ ...i, idx }), state.items))
@@ -32,10 +32,10 @@ const radioLists = Actions.filter(toRadioLists);
 
 const allLists = radioLists.scan({}, toAllLists);
 const listAndEvent = Bacon.when([ allLists, radioItemEvents.toEventStream()], toListAndEvent);
-const listUpdates = radioLists.filter(isUpdateEvents).debounce(100);
+const listUpdates = radioLists.debounce(100);
 
 radioLists.filter(toMountEvents).onValue(toInitItem)
 listAndEvent.flatMap(toUpdates).onValue(publishToList)
 radioItemEvents.delay(20).onValue(checkItem);
-listAndEvent.onValue(publishExternal);
+listAndEvent.log('...').onValue(publishExternal);
 listUpdates.map(toCheckTarget).filter(hasTarget).onValue(publishUpdate);

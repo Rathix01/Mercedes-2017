@@ -58,5 +58,5 @@ var orgColorUpdate = Bacon.when([ orgDetail.toProperty(),
 			 						color4.toProperty(),
 			 						colorUpdate.toEventStream() ], toOrgColorUpdate);
 
-orgColorUpdate.log('updatey...').onValue(publishUpdating);
+orgColorUpdate.onValue(publishUpdating);
 orgColorUpdate.flatMap(updateOrg).onValue(publishUpdated);

@@ -107,31 +107,37 @@ const styles = StyleSheet.create({
   formsListTop: {
     marginTop: 20,
     borderTop: `solid 1px ${ Variables.colors.gray }`,
+    overflowY: "auto",
+    maxHeight: 400,
+    height: "100%",
   },
   formsList: {
-    margin: 10,
     fontFamily: "Raleway",
   },
   submittedFormItem: {
     display: 'flex',
     flexDirection: 'row',
-    padding: "6px 3px 6px 20px",
-    borderBottom: `solid 1px ${ Variables.colors.gray }`,
+    padding: "12px 6px 12px 20px",
+    border: `solid 1px ${ Variables.colors.lightGray }`,
+    margin : 1,
+    background: Variables.colors.lightGray,
   },
   itemCell: {
     flex: 1,
   },
   assignFormArea:{
-    paddingTop: 10,
-    paddingBottom: 10,
     minHeight: 140,
     borderBottom: `solid 1px ${ Variables.colors.gray }`,
     marginBottom: 10,
+    background: Variables.colors.black,
+    color: Variables.colors.white,
+    marginTop: -3,
   },
   assignFormInputs:{
     display: 'flex',
     flexDirection: 'row',
     marginTop: 5,
+    padding: "0px 10px",
   },
   assignFormInput: {
     flex: 1,
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
     }
   },
   assignFormUrl: {
-    marginTop: 8,
+    marginTop: 18,
     padding: "10px 10px",
     background: Variables.colors.blue,
     color: Variables.colors.white,

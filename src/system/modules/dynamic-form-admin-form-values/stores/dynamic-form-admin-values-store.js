@@ -4,7 +4,7 @@ import publish from '../../../stores/state-store';
 import Actions from '../../../../actions/actions';
 
 const toValueByType = (state) => {
-	//console.log(state.formInputType || state.component, state)
+	//console.log(state);
 	return {
 		"InputText": state.event ? state.event.targetValue : " ",
 		"InputTextArea": state.event ? state.event.targetValue : " ",
@@ -12,8 +12,9 @@ const toValueByType = (state) => {
 		"InputRadioButton": state.value,
 		"InputRadioList": state.value,
 		"InputDatePicker": state.value,
+		"InputSignUpPasswords": state.value,
 		"InputSelect": state.event ? state.event.targetValue : " ",
-		default: " ",
+		"InputAutoComplete": state.autocompleteText,
 	}[state.formInputType || state.component]
 };
 
@@ -34,21 +35,25 @@ const formInputActions = Actions.filter(toFormInputActions);
 const nextFormActions = Actions.filter(toNextFormListenerActions);
 const formQuestions = nextFormActions.map(toFormQuestions);
 
-const formAnswers = formInputActions.filter(R.prop("isQuestion")).scan({}, toFormAnswers);
+const formAnswers = formInputActions.filter(R.prop("isQuestion")).scan({}, toFormAnswers)//..log('form answers');
 
 formInputActions.map(mapToNextValue).onValue((state) => {
+
+	//console.log(state);
 	if(state.isQuestion) {
 		//hacky whacky
 		//needs to be more flexible.
 		if(state.formInputType === "InputDatePicker" || 
 		   state.formInputType === "InputCheckboxList" ||
-		   state.formInputType === "InputRadioList") {
-			// something happens here...
-			//console.log(state.formInputType);
-		} else if(state.component === "InputCheckbox" || state.component === "InputRadio") {
-			//publish(state.id, { value: state.text });
+		   state.formInputType === "InputSignUpPasswords" ||
+		   state.formInputType === "InputAutoComplete" ||
+		   state.formInputType === "InputRadioList" ||
+		   state.component === "InputCheckbox" || 
+		   state.component === "InputRadio") {
+			//do nothing
 		} else {
-			publish(state.id, { value: state.event.targetValue })
+			//console.log(state, state.event.targetValue)
+			publish(state.id, { value: state.event.targetValue, targetValue: state.event.targetValue })
 		}
 	}
 });

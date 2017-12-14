@@ -52,7 +52,14 @@ const toAnimateSaved = R.curry((key, state) => {
 	})
 });
 
-formSaved.log('Form was saved...')
+const toRedirect = (form, event) => form.formName.event.targetValue
+const encode = (key) => key.split(" ").join("+");
+const toNextPage = (formName) => {
+	window.location = `${window.location.href}&form=${encode(formName)}`
+}
+
+
+formSaved.log()
 
 //show saving, then hide when saved.
 saveForm.map({ display: true }).onValue(publish("SavingNotificationVisibility"));
@@ -73,5 +80,7 @@ const deletedNotificationAnimation = formDeletedAndAnimated.map(toAnimateSaved("
 deletedNotificationAnimation.map({ display: false }).onValue(publish("DeletedNotificationVisibility"));
 
 // new form.
-formCreated.map({ display: false }).onValue(publish("NewFormVisibility"));
-formCreated.map({ display: true }).onValue(publish("OrgAndFormVisibility"));
+//formCreated.map({ display: false }).onValue(publish("NewFormVisibility"));
+//formCreated.map({ display: true }).onValue(publish("OrgAndFormVisibility"));
+
+Bacon.when( [ newForm.toProperty(), formCreated.toEventStream() ], toRedirect).onValue(toNextPage)

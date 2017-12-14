@@ -12,8 +12,10 @@ const renderChild = (state, c) => {
     									   ...state });
 }
 
+const getZIndex = (state) => 10000 - parseInt(state.index);
+
 const dynamicFormAdminSection = (state) => {
-	return (<div className={ section }>
+	return (<div className={ section } style={{ zIndex: getZIndex(state) }}>
 				{ renderChild(state, state.dataComponent) }
 				<DynamicFormAdminControls { ...state } id={ `${ state.id }Controls` } isRoot={true} rootId={ state.id } /> 
 			</div>);

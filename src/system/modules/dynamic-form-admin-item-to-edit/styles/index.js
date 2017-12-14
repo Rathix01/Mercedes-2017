@@ -5,6 +5,9 @@ const styles = StyleSheet.create({
   row: {
     padding: 4
   },
+  idRow: {
+
+  },
   btnRow: {
     display: 'flex',
     marginTop: 20
@@ -40,6 +43,7 @@ const styles = StyleSheet.create({
 
 module.exports = {
   row: css(styles.row),
+  idRow: css(styles.row, styles.idRow),
   btnRow: css(styles.row, styles.btnRow),
   newForm: css(styles.newForm),
 }

@@ -25,6 +25,7 @@ const toNewQuestion	= (state) => ({
 	  	inputType: "text",
 	  	type: "question",
 	  	inputType: "text",
+	  	keywords: ["page1"],
 	  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 	  	isNew: true,
 	});

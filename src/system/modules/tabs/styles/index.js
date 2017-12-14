@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     marginBottom: 10,
     minHeight: 200,
+    position: "relative",
   },
   tab: {
 

@@ -12,13 +12,21 @@ const toNonDeleteItem = (state) => ({ delete: false, ...state });
 
 // TODO - remove this once validations become standard.
 const toCleanItem = (state) => ({ ...state, validations: state.validations !== undefined ? state.validations : {} });
+const toIndexAdjustment = R.curry((indexUpdate, state) => ({  ...state, nextUpdate: { idxUpdate: indexUpdate, targetID: state.uniqueId }}));
 
 const activeForm = Actions.filter(toFormListenerAction);
 const editAction = BasicControls.basicEdit.toEventStream();
 const deleteAction = BasicControls.basicDelete.toEventStream();
+const indexDownActions = BasicControls.indexDown.toEventStream();
+const indexUpActions = BasicControls.indexUp.toEventStream();
+
 const itemToEdit = Bacon.when([ activeForm.toProperty(), editAction ], toEditItem).map(R.head);
 const itemToDelete = Bacon.when([ activeForm.toProperty(), deleteAction ], toEditItem).map(R.head);
+const itemIndexDown = Bacon.when([ activeForm.toProperty(), indexDownActions ], toEditItem).map(R.head).map(toIndexAdjustment(1));
+const itemIndexUp = Bacon.when([ activeForm.toProperty(), indexUpActions ], toEditItem).map(R.head).map(toIndexAdjustment(-1));
 
-itemToEdit.map(toCleanItem).onValue(publish("ItemToEdit"));
+const editActions = itemToEdit.merge(itemIndexUp).merge(itemIndexDown);
+
+editActions.map(toCleanItem).onValue(publish("ItemToEdit"));
 itemToDelete.map(toDeleteItem).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));
-itemToEdit.map(toNonDeleteItem).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));
+editActions.map(toNonDeleteItem).onValue(publish("DynamicFormAdminSingleItemUpdateListener"));

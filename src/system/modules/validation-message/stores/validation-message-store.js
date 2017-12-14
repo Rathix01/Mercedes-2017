@@ -10,7 +10,6 @@ const isNotDupilicate = (state) => state.prev.valid !== state.next.valid;
 const promoteValid = (state) => R.merge(state, { valid: state.inputState.valid });
 
 const toDelayAsRequired = (state) => {
-	console.log(state);
 	return state.next.inputState && 
 		   state.next.inputState.formInputType === "InputDatePicker"
 		? Bacon.once(state).debounce(1000)

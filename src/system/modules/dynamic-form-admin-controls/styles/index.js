@@ -14,16 +14,18 @@ const styles = StyleSheet.create({
     minHeight: 150,
   },
   btn: {
-    minWidth: 50,
+    width: 30,
+    height: 30,
     textAlign: "center",
     marginRight: 3,
-    paddingTop: 2,
+    paddingTop: 7,
     color: Variables.colors.white,
     cursor: 'pointer',
     opacity: 0.6,
     borderRadius: 50,
     position: "relative",
     background: Variables.colors.gray,
+    boxSizing: "border-box",
   },
   editBtn: {
     ":hover": {

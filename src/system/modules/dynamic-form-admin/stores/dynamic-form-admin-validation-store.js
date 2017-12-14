@@ -47,7 +47,5 @@ const validatedFields = userFieldActions.map(toIsValid);
 const validFields = validatedFields.filter(validShouldBe(true));
 const invalidFields = validatedFields.filter(validShouldBe(false));
 
-validatedFields.flatMapLatest(processDelay).onValue((state) => publish(`${state.rootId}InputValidation`, {inputState:state}))
-//userFieldActions.filter(isNotListenerAction).onValue(publishValue);
-
-//userFieldActions.log('-->')
+//validatedFields.flatMapLatest(processDelay).onValue((state) => publish(`${state.rootId}InputValidation`, {inputState:state}));
+//userFieldActions.filter(isNotListenerAction).onValue(publish("RulesListener"));

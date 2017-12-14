@@ -5,6 +5,6 @@ import publish from '../../../stores/state-store';
 
 const toInputTextAction = (state) => state.component === "InputText";
 
-const inputTextAction = Actions.map(toInputTextAction);
+const inputTextAction = Actions.filter(toInputTextAction)//.log('.....');
 
 //inputTextAction.log('text input....')

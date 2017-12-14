@@ -11,11 +11,11 @@ const toFormListData = (state) => R.values(state);
 const toFormItems = (state) => R.flatten(R.map(R.values, state));
 const toItemState = (state) => ({ itemState: state });
 const toFormList = (state) => ({ items: R.map(toItemState, state) });
+const includeOrgInForms	 = (org, forms) => ({ items: R.map((i) => ({ org: org, ...i }), forms.items) });
 
 const formInstances = Firebase.data.map(R.prop("FormInstances"));
 const formsForOrg = Bacon.combineTemplate({ formInstances, orgDetail }).map(toFormsForOrg);
-const formsList = formsForOrg.map(toFormListData).map(toFormItems).map(toFormList);
+const formsListItem = formsForOrg.map(toFormListData).map(toFormItems).map(toFormList);
+const formsWithOrg = Bacon.when([ orgDetail.toProperty(), formsListItem.toEventStream() ], includeOrgInForms)
 
-//formsList.log('?')
-
-formsList.onValue(publish("OrgFormsListSmall"));
+formsWithOrg.onValue(publish("OrgFormsListSmall"));

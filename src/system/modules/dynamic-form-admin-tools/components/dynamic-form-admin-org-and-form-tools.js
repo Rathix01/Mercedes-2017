@@ -1,6 +1,5 @@
 import React from 'react';
 import readWrite from '../../../components/read-and-write-state';
-import DynamicFormAdminItemToEdit from '../../dynamic-form-admin-item-to-edit';
 import { genericToolsContainer, fixedContainer } from '../styles';
 import InputSelectList from '../../input-select-list';
 import InputText from '../../input-text';
@@ -22,7 +21,6 @@ const dynamicFormAdminOrgAndFormTools = (state) => {
 					<Text id="OrgSelectionValue" />
 				</div>
 				<div className={inputArea}>
-					<label>Form:</label>
 					<Text id="FormSelectionValue" />
 				</div>
 			</VisibilityContainer>

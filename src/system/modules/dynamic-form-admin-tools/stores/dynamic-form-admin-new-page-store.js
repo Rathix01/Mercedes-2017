@@ -23,6 +23,7 @@ const toNextPageItems	= (nextPage) => ({
 	  	inputType: "text",
 	  	type: "header",
 	  	inputType: "text",
+	  	keywords: [`page${(nextPage + 1)}`],
 	  	itemState: { items: [ { text: 'Yes', value: 'Yes' }, { text: 'No', value: 'No' } ] },
 	  	isNew: true,
 	  	isNewPage: true,

@@ -9,7 +9,7 @@ module.exports = {
     
     //blues
     darkBlue: "#2C82C9", //Mariner
-    blue: "#3D8EB9", //CURIOUS
+    blue: "#259BF3",
 
     //sea green (google: color name #1ABC9C)
     seaGreen: "#1ABC9C",

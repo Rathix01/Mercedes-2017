@@ -45,7 +45,6 @@ const tabUpdateAction = Actions.filter(toTabChangeListenerAction).map( (s) => ({
 																				  labels: ["Main", "Edit", "Values"] }) ).toEventStream();
 
 
-
 const tabUpdate = Bacon.when([ allTabsAction.toProperty(), tabUpdateAction.skip(1) ], toTabTarget);
 
 const tabAction = tabUIAction.merge(tabUpdate);

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import DynamicFormAdmin from '../system/modules/dynamic-form-admin';
+import MBWebsite from '../system/modules/mb-website';
 
 class App extends Component {
   render() {
-    return <DynamicFormAdmin id="Main" />;
+    return <MBWebsite id="Main" />;
   }
 };
 

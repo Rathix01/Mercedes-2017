@@ -6,7 +6,7 @@ import { submittedFormItem, itemCell } from '../styles';
 const formatDate = (state) => `${ new Date(state).toLocaleString() }`;
 const encodeToUrl = (state) => state.split(" ").join('+');
 
-const orgFormsList = (state) => {
+const orgFormsListItem = (state) => {
 	return (
 		<div className={ submittedFormItem }>
 			<div className={itemCell} style={{ maxWidth: "60px" }}>
@@ -22,7 +22,7 @@ const orgFormsList = (state) => {
 				{ formatDate(state.itemState.lastModified) }
 			</div>
 			<div className={itemCell}>
-				<a href={ encodeToUrl(`/?org=St+Vincents
+				<a href={ encodeToUrl(`/?org=${ state.org.formsKey }
 							&form=${ state.itemState.formName }
 							&stamp=${ state.itemState.instance }
 							&publish=true`) }
@@ -34,5 +34,5 @@ const orgFormsList = (state) => {
 	)
 }
 
-export default read(orgFormsList, "OrgFormsList");
+export default read(orgFormsListItem, "OrgFormsListItem");
 

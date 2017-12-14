@@ -2,14 +2,16 @@ import React from 'react';
 import readWrite from '../../../components/read-and-write-state';
 import VisibilityContainer from '../../visibility-container';
 import DynamicFormAdminInstanceFeedback from './dynamic-form-admin-instance-feedback';
-import { nextPrevBtns, center, nextBtn, prevBtn, pageNumber } from '../styles';
+import { nextPrevBtns, center, nextBtn, prevBtn, pageNumber, pageBtnsHeader } from '../styles';
 
 const dynamicFormAdminNavButtons = (state) => {
-	console.log(state);
 	return (
 			<div className={nextPrevBtns}>
+				<div className={pageBtnsHeader}>Page</div>
 				<div className={center}>
-					<div className={pageNumber}>{state.page || 1}</div>
+					<div>
+						<div className={pageNumber}>{state.page || 1}</div>
+					</div>
 					<VisibilityContainer id="BackButtonVisibility" defaultVisibility={true}>
 						<button onClick={state.handleEvent} className={prevBtn} id='back'>Back</button>
 					</VisibilityContainer>

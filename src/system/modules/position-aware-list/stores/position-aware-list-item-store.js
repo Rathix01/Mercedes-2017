@@ -99,7 +99,7 @@ const toNext = (prev, next) => {
 const toAllIds = (prev, next) => R.uniq(R.concat(prev.ids, R.map(R.prop("uniqueId"), R.values(next))));
 const toPrevAndNext = (prev, next) => ({ ids: toAllIds(prev, next), updates: toNext(prev, next) })
 
-const positionAwareAction = Actions.filter(toPositionAwareListItem).log('?');
+const positionAwareAction = Actions.filter(toPositionAwareListItem)//.log('?');
 const positionAwareListItemActions = positionAwareAction;
 const itemMount = positionAwareAction.filter(toItemMount);
 itemMount.onValue(toInitialHide);

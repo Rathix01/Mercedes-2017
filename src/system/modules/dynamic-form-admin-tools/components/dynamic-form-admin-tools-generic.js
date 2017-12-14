@@ -3,6 +3,7 @@ import readWrite from '../../../components/read-and-write-state';
 import DynamicFormAdminItemToEdit from '../../dynamic-form-admin-item-to-edit';
 import DynamicFormAdminOrgAndFormTools from './dynamic-form-admin-org-and-form-tools';
 import DynamicFormAdminFormValues from '../../dynamic-form-admin-form-values';
+import DynamicFormAdminRules from './dynamic-form-admin-tools-rules';
 import { genericToolsContainer, fixedContainer } from '../styles';
 import VisibilityContainer from '../../visibility-container';
 import AnimationContainer from '../../animation-container';
@@ -13,11 +14,12 @@ const dynamicFormAdminGenericTools = (state) => {
 	return (
 		<div className={genericToolsContainer}>
 			<div className={fixedContainer}>
-				<Tabs id='ToolTabs' labels={ ["Main", "Edit", "Values"] }>
+				<Tabs id='ToolTabs' labels={ ["Main", "Edit", "Rules", "Values"] }>
 					<DynamicFormAdminOrgAndFormTools id="DynamicFormAdminOrgAndFormTools" />
 					<VisibilityContainer id="ItemToEditVisibility">
 						<DynamicFormAdminItemToEdit id="ItemToEdit" />	
 					</VisibilityContainer>
+					<DynamicFormAdminRules id="DynamicFormAdminRules" />
 					<DynamicFormAdminFormValues id="DynamicFormAdminFormValues" />
 				</Tabs>
 				
